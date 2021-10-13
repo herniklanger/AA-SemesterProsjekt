@@ -5,7 +5,7 @@ namespace InterfacesLib.Fleet
     public interface IVehicle<TVehicleType, TMake, TModel> where TMake : IMake where TModel : IModel where TVehicleType : IVehicleType
     {
         string Vinnummer { get; set; }
-        string Nummerplade { get; set; }
+        string Licenseplate { get; set; }
         string ModelType { get; set; }
         DateTime RegisteringsDate { get; set; }
         decimal DrivedKm { get; set; }

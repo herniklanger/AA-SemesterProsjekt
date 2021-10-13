@@ -1,6 +1,6 @@
 ﻿using InterfacesLib.Fleet;
 
-namespace Businesslogic
+namespace Fleet.Businesslogic
 {
     public class VehicleType : IVehicleType
     {

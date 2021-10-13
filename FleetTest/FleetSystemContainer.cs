@@ -26,5 +26,6 @@ namespace FleetTest
 
             TestClient = appFactory.CreateClient();
         }
+
     }
 }

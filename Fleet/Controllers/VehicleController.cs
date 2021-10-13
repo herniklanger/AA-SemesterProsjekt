@@ -1,4 +1,4 @@
-﻿using Businesslogic;
+﻿using Fleet.Businesslogic;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -22,7 +22,7 @@ namespace Fleet.Controllers
 
         // GET api/<Vehicle>/5
         [HttpGet("{id}")]
-        public Vehicle Get(int id)
+        public Vehicle Get(string id)
         {
             throw new NotImplementedException();
         }
@@ -36,15 +36,16 @@ namespace Fleet.Controllers
 
         // PUT api/<Vehicle>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] Vehicle value)
+        public void Put(string id, [FromBody] Vehicle value)
         {
             throw new NotImplementedException();
         }
 
         // DELETE api/<Vehicle>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public void Delete(string id)
         {
+            throw new NotImplementedException();
         }
     }
 }
