@@ -1,4 +1,4 @@
-﻿using InterfacesLib;
+﻿using InterfacesLib.Fleet;
 
 namespace Businesslogic
 {

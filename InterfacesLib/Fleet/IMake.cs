@@ -1,4 +1,4 @@
-﻿namespace InterfacesLib
+﻿namespace InterfacesLib.Fleet
 {
     public interface IMake
     {

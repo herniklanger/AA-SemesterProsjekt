@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace InterfacesLib
+namespace InterfacesLib.Fleet
 {
     public interface IVehicle<TVehicleType, TMake, TModel> where TMake : IMake where TModel : IModel where TVehicleType : IVehicleType
     {
