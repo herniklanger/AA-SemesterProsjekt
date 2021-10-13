@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Businesslogic;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,28 +15,30 @@ namespace Fleet.Controllers
     {
         // GET: api/<Vehicle>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IEnumerable<Vehicle> Get()
         {
-            return new string[] { "value1", "value2" };
+            throw new NotImplementedException();
         }
 
         // GET api/<Vehicle>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public Vehicle Get(int id)
         {
-            return "value";
+            throw new NotImplementedException();
         }
 
         // POST api/<Vehicle>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public void Post([FromBody] Vehicle value)
         {
+            throw new NotImplementedException();
         }
 
         // PUT api/<Vehicle>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public void Put(int id, [FromBody] Vehicle value)
         {
+            throw new NotImplementedException();
         }
 
         // DELETE api/<Vehicle>/5
