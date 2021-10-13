@@ -47,7 +47,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fleet.Businesslogic", "Busi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Driver.BusinessLogic", "DriverBusinessLogic\Driver.BusinessLogic.csproj", "{53CF395A-AFC8-4DA8-994B-44F99F716DB9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataBaseLayre", "DataBase\DataBaseLayre.csproj", "{7BEADD9F-FDA4-451F-9F82-7AC49A2DB460}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fleet.DataBaseLayre", "DataBase\Fleet.DataBaseLayre.csproj", "{7BEADD9F-FDA4-451F-9F82-7AC49A2DB460}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
