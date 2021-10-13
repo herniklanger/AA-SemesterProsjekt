@@ -13,7 +13,7 @@ namespace Fleet.Controllers
     [ApiController]
     public class VehicleController : ControllerBase
     {
-        // GET: api/<Vehicle>
+        // GET: api/Vehicle
         [HttpGet]
         public IEnumerable<Vehicle> Get()
         {
