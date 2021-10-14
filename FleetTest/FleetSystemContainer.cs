@@ -23,7 +23,6 @@ namespace FleetTest
                         //services.AddDbContext<DataContext>(options => { options.UseInMemoryDatabase("TestDb"); });
                     });
                 });
-
             TestClient = appFactory.CreateClient();
         }
 
