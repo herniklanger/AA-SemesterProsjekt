@@ -28,11 +28,28 @@ namespace FleetTest.IntergrationTest
 		}
 
 
-		[Fact]
-		public async Task CreateAndGet_Vehicle()
+		[Theory]
+		[MemberData(nameof(CreateAndGet_VehicleData))]
+		public async Task CreateAndGet_Vehicle(Vehicle vehicle)
 		{
 			//Arrange
-			var vehicle = new Vehicle
+
+			//Act
+			var _ = await TestClient.PostAsJsonAsync("api/Vehicle", vehicle);
+			HttpResponseMessage response = await TestClient.GetAsync($"api/Vehicle/{vehicle.Vinnummer}");
+
+			//Assert
+			Assert.True(response.IsSuccessStatusCode);
+
+			string resultText = await response.Content.ReadAsStringAsync();
+			Assert.NotEmpty(resultText);
+
+			Vehicle resultObject = JsonConvert.DeserializeObject<Vehicle>(resultText);
+			Assert.Equal(resultObject, vehicle);
+		}
+	  	public static IEnumerable<object[]> CreateAndGet_VehicleData()
+        {
+			yield return new object[] { new Vehicle
 			{
 				Licenseplate = "CF24542",
 				Make = new Make
@@ -49,20 +66,7 @@ namespace FleetTest.IntergrationTest
 					Name = "Personbil"
 				},
 				Vinnummer = "1HGBH41JXMN109186"
-			};
-
-			//Act
-			var _ = await TestClient.PostAsJsonAsync("api/Vehicle", vehicle);
-			HttpResponseMessage response = await TestClient.GetAsync($"api/Vehicle/{vehicle.Vinnummer}");
-
-			//Assert
-			Assert.True(response.IsSuccessStatusCode);
-
-			string resultText = await response.Content.ReadAsStringAsync();
-			Assert.NotEmpty(resultText);
-
-			Vehicle resultObject = JsonConvert.DeserializeObject<Vehicle>(resultText);
-			Assert.Equal(resultObject, vehicle);
-		}
+			}};
+        }
 	}
 }
