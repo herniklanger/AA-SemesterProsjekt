@@ -1,10 +1,12 @@
-﻿using InterfacesLib.Fleet;
-using System;
+﻿using System;
+using InterfacesLib;
+using InterfacesLib.Fleet;
 
-namespace Fleet.Businesslogic
+namespace CoreLib.Models
 {
-    public class Vehicle : IVehicle<VehicleType, Make, Model>
+    public class Vehicle : IVehicle<VehicleType, Make, Model>, IEntity<int>
     {
+        public int Id { get; set; }
         public string Vinnummer { get; set; }//ID
         public string Licenseplate { get; set; }
         public string ModelType { get; set; }

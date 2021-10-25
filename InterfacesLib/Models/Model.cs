@@ -1,8 +1,9 @@
-﻿using InterfacesLib.Fleet;
+﻿using InterfacesLib;
+using InterfacesLib.Fleet;
 
-namespace Fleet.Businesslogic
+namespace Fleet.DataBaseLayre.Models
 {
-    public class Model : IModel
+    public class Model : IModel, IEntity<int>
     {
         public int Id { get; set; }
         public string Name { get; set; }

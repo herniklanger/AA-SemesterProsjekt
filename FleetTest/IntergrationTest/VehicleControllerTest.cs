@@ -1,11 +1,10 @@
-using System;
-using System.Net.Http;
-using System.Threading.Tasks;
-using Xunit;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Net.Http.Json;
-using Fleet.Businesslogic;
+using System.Threading.Tasks;
+using Fleet.DataBaseLayre.Models;
+using Xunit;
 
 namespace FleetTest.IntergrationTest
 {
