@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Fleet.DataBaseLayre.Models;
+using CoreLib.Models;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -23,10 +23,10 @@ namespace Fleet.Controllers
 
 
 		// GET: api/Vehicle
-		[HttpGet]
-		public async Task<IEnumerable<Vehicle>> GetByModel(CancellationToken cancellationToken = new())
+		[HttpGet("ByMake")]
+		public async Task<IEnumerable<Vehicle>> GetByMake([FromQuery] string make, CancellationToken cancellationToken = new())
 		{
-			return await _fleetRepository.GetByMake("",cancellationToken);
+			return await _fleetRepository.GetByMake(make, cancellationToken);
 		}
 
 		// GET: api/Vehicle

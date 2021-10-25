@@ -35,12 +35,12 @@ namespace Fleet
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
-			var sqLiteConnection = new SQLiteConnection("AA.db");
+			var sqLiteConnection = new SqlConnection("Data Source=den1.mssql7.gear.host;Integrated Security=false;User ID=aasemterprosjekt;Password=Jj2E8-?GYtyq;");
 
 			services.AddSingleton<IDbConnection>(sqLiteConnection);
 			services.AddSingleton<FleetRepository>();
 
-			OrmLiteConfig.DialectProvider = new SqliteOrmLiteDialectProvider();
+			OrmLiteConfig.DialectProvider = new SqlServerOrmLiteDialectProvider();
 			OrmLiteConfig.DialectProvider.NamingStrategy = new OrmLiteNamingStrategyBase();
 
 			services.AddSingleton<IDbConnectionFactory>(c =>

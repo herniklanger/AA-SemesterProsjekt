@@ -1,8 +1,13 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+		<LangVersion>10</LangVersion>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ServiceStack.Interfaces" Version="5.12.0" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\InterfacesLib\InterfacesLib.csproj" />

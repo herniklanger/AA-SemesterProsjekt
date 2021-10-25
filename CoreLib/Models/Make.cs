@@ -1,11 +1,18 @@
 ﻿using InterfacesLib;
 using InterfacesLib.Fleet;
+using ServiceStack.DataAnnotations;
+using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace CoreLib.Models
 {
-    public class Make : IMake, IEntity<int>
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-    }
+	public class Make : IMake, IEntity<int>
+	{
+		[AutoIncrement]
+		public int Id { get; set; }
+		public string Name { get; set; }
+		[JsonIgnore]
+		[Reference]
+		public List<Vehicle> Vehicles { get; set; }
+	}
 }
