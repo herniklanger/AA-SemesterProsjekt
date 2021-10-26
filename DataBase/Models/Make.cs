@@ -4,7 +4,7 @@ using ServiceStack.DataAnnotations;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace CoreLib.Models
+namespace Fleet.DataBaseLayre.Models
 {
 	public class Make : IMake, IEntity<int>
 	{

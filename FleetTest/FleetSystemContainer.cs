@@ -1,11 +1,12 @@
-﻿using Fleet;
-using Microsoft.AspNetCore.Mvc.Testing;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Data;
+using System.Data.SQLite;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
+using Fleet;
+using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+
 
 namespace FleetTest
 {
@@ -19,8 +20,8 @@ namespace FleetTest
                 {
                     builder.ConfigureServices(services =>
                     {
-                        //services.RemoveAll(typeof(DataContext));
-                        //services.AddDbContext<DataContext>(options => { options.UseInMemoryDatabase("TestDb"); });
+                        services.RemoveAll(typeof(IDbConnection));
+                        services.AddSingleton<IDbConnection>(options => new SQLiteConnection(":memory:"));
                     });
                 });
             TestClient = appFactory.CreateClient();

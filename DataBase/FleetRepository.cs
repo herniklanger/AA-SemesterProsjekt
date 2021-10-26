@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using CoreLib.Models;
+using Fleet.DataBaseLayre.Models;
 using InterfacesLib;
 using ServiceStack.Data;
 using ServiceStack.OrmLite;

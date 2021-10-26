@@ -4,7 +4,7 @@ using InterfacesLib;
 using InterfacesLib.Fleet;
 using ServiceStack.DataAnnotations;
 
-namespace CoreLib.Models
+namespace Fleet.DataBaseLayre.Models
 {
 	public class Vehicle : IVehicle<VehicleType, Make, Model>, IEntity<int>
 	{
