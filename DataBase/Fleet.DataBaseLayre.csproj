@@ -12,7 +12,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Businesslogic\Fleet.Businesslogic.csproj" />
-    <ProjectReference Include="..\CoreLib\CoreLib.csproj" />
   </ItemGroup>
 
 </Project>

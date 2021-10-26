@@ -4,14 +4,13 @@ using ServiceStack.DataAnnotations;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace CoreLib.Models
+namespace Fleet.DataBaseLayre.Models
 {
-	public class Model : IModel, IEntity<int>
+	public class VehicleType : IVehicleType, IEntity<int>
 	{
 		[AutoIncrement]
 		public int Id { get; set; }
 		public string Name { get; set; }
-		public string Variant { get; set; }
 		[JsonIgnore]
 		[Reference]
 		public List<Vehicle> Vehicles { get; set; }
