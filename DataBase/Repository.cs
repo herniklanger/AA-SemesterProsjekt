@@ -11,9 +11,8 @@ using ServiceStack.OrmLite.Dapper;
 
 namespace Fleet.DataBaseLayre
 {
-	public abstract class Repository<TEntity, TKey> : IRepository<TEntity, TKey>
-		where TEntity : class, IEntity<TKey>
-		where TKey : notnull
+	public abstract class Repository<TEntity> : IRepository<TEntity, int>
+		where TEntity : class, IEntity<int>
 	{
 		protected readonly IDbConnection Connection;
 
@@ -23,12 +22,13 @@ namespace Fleet.DataBaseLayre
 			Connection.CreateTable<TEntity>();
 		}
 
-		public virtual async Task<object?> CreateAsync(TEntity entity, CancellationToken token = default)
+		public virtual async Task<int> CreateAsync(TEntity entity, CancellationToken token = default)
 		{
-			return await Connection.SaveAsync(entity, true, token: token);
+			var id = await Connection.InsertAsync(entity, token: token);
+			return (int)id;//await Connection.SaveAsync(entity, true, token: token);
 		}
 
-		public virtual async Task<TEntity?> GetAsync(TKey id, CancellationToken token = default)
+		public virtual async Task<TEntity?> GetAsync(int id, CancellationToken token = default)
 		{
 			return (await Connection.SelectAsync<TEntity>(entity => entity.Id.Equals(id), token: token)).FirstOrDefault();
 		}
@@ -38,12 +38,13 @@ namespace Fleet.DataBaseLayre
 			return await Connection.SelectAsync<TEntity>(token: token);
 		}
 
-		public virtual async Task<object?> UpdateAsync(TEntity entity, CancellationToken token = default)
+		public virtual async Task<int> UpdateAsync(TEntity entity, CancellationToken token = default)
 		{
-			return await Connection.SaveAsync(entity, true, token: token);
+			var id = await Connection.UpdateAsync(entity, token: token);
+			return id;//await Connection.SaveAsync(entity, true, token: token);
 		}
 
-		public virtual async Task<int> DeleteAsync(TKey id, CancellationToken token = default)
+		public virtual async Task<int> DeleteAsync(int id, CancellationToken token = default)
 		{
 			return await Connection.DeleteAsync<TEntity>(id, token: token);
 		}
@@ -67,7 +68,7 @@ namespace Fleet.DataBaseLayre
 		}
 
 		/// <inheritdoc cref="Enumerable.Any{T}(IEnumerable{T}, Func{T, bool})"/>
-		public async Task<bool> ExistsAsync(TKey id, CancellationToken token = default)
+		public async Task<bool> ExistsAsync(int id, CancellationToken token = default)
 		{
 			return (await GetAllAsync(token)).Any(entity => entity.Id.Equals(id));
 		}
