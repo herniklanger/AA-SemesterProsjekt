@@ -51,23 +51,35 @@ namespace Fleet.Controllers
 
 		// POST api/<Vehicle>
 		[HttpPost]
-		public async Task Post([FromBody] Vehicle value, CancellationToken cancellationToken = new())
+		public async Task<ActionResult<Vehicle>> Post([FromBody] Vehicle value, CancellationToken cancellationToken = new())
 		{
-			await _fleetRepository.CreateAsync(value, cancellationToken);
+			var id = await _fleetRepository.CreateAsync(value, cancellationToken);
+			var vehicle = await _fleetRepository.GetAsync(id, cancellationToken);
+
+			return vehicle is not null 
+				? Ok(vehicle) 
+				: StatusCode(500);
 		}
 
 		// PUT api/<Vehicle>/5
 		[HttpPut("{id}")]
-		public async Task Put(int id, [FromBody] Vehicle value, CancellationToken cancellationToken = new())
+		public async Task<ActionResult<Vehicle>> Put(int id, [FromBody] Vehicle value, CancellationToken cancellationToken = new())
 		{
-			await _fleetRepository.UpdateAsync(value, cancellationToken);
+			value.Id = id;
+			var updatedId = await _fleetRepository.UpdateAsync(value, cancellationToken);
+			var vehicle = await _fleetRepository.GetAsync(updatedId, cancellationToken);
+
+			return vehicle is not null
+				? Ok(vehicle)
+				: StatusCode(500);
 		}
 
 		// DELETE api/<Vehicle>/5
 		[HttpDelete("{id}")]
-		public async Task Delete(int id, CancellationToken cancellationToken = new())
+		public async Task<ActionResult> Delete(int id, CancellationToken cancellationToken = new())
 		{
 			await _fleetRepository.DeleteAsync(id, cancellationToken);
+			return Ok();
 		}
 	}
 }

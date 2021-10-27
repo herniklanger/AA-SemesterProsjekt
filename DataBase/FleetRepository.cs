@@ -9,7 +9,7 @@ using ServiceStack.OrmLite.Dapper;
 
 namespace Fleet.DataBaseLayre
 {
-	public class FleetRepository : Repository<Vehicle, int>, IRepository<Vehicle, int>
+	public class FleetRepository : Repository<Vehicle>
 	{
 		public FleetRepository(IDbConnectionFactory connection) : base(connection)
 		{
