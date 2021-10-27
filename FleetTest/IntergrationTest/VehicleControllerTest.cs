@@ -5,6 +5,8 @@ using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Fleet.DataBaseLayre.Models;
 using Xunit;
+using System.Data;
+using InterfacesLib;
 
 namespace FleetTest.IntergrationTest
 {
@@ -30,12 +32,34 @@ namespace FleetTest.IntergrationTest
 
 		[Theory]
 		[MemberData(nameof(CreateAndGet_VehicleData))]
-		public async Task CreateAndGet_Vehicle(Vehicle vehicle)
+		public async Task CreateAll_Vehicles(Vehicle vehicle)
 		{
 			//Arrange
 
 			//Act
-			var _ = await TestClient.PostAsJsonAsync("api/Vehicle", vehicle);
+			var resoult = await TestClient.PostAsJsonAsync("api/Vehicle", vehicle);
+			//Assert
+			Assert.True(resoult.IsSuccessStatusCode);
+			string resultText = await resoult.Content.ReadAsStringAsync();
+			Assert.NotEmpty(resultText);
+
+			Vehicle resultObject = JsonConvert.DeserializeObject<Vehicle>(resultText);
+			Assert.Equal(resultObject, vehicle);
+
+			IRepository<Vehicle, int> db = services.GetService(typeof(IRepository<Vehicle, int>)) as IRepository<Vehicle, int>;
+
+			Assert.Equal(await db.GetAsync(resultObject.Id), resultObject);
+		}
+
+
+		[Theory]
+		[MemberData(nameof(CreateAndGet_VehicleData))]
+		public async Task CreateAndGet_Vehicle(Vehicle vehicle)
+		{
+			//Arrange
+			IRepository<Vehicle, int> db = services.GetService(typeof(IRepository<Vehicle, int>)) as IRepository<Vehicle, int>;
+			await db.UpsertAsync(vehicle);
+			//Act
 			HttpResponseMessage response = await TestClient.GetAsync($"api/Vehicle/{vehicle.Vinnummer}");
 
 			//Assert

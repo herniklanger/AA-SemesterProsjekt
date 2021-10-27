@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
 using System.Data.SQLite;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ namespace FleetTest
 {
     public class FleetSystemContainer
     {
+        protected readonly IServiceProvider services;
         protected readonly HttpClient TestClient;
         protected FleetSystemContainer()
         {
@@ -24,8 +26,8 @@ namespace FleetTest
                         services.AddSingleton<IDbConnection>(options => new SQLiteConnection(":memory:"));
                     });
                 });
+            services = appFactory.Services;
             TestClient = appFactory.CreateClient();
         }
-
     }
 }
