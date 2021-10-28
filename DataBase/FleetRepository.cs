@@ -15,11 +15,17 @@ namespace Fleet.DataBaseLayre
 	{
 		public FleetRepository(IDbConnectionFactory connection) : base(connection)
 		{
-			Connection.DropTable<Vehicle>();
-			Connection.DropAndCreateTable<Make>();
-			Connection.DropAndCreateTable<Model>();
-			Connection.DropAndCreateTable<VehicleType>();
-			Connection.CreateTable<Vehicle>();
+            //Connection.DropTable<Vehicle>();
+            //Connection.DropAndCreateTable<Make>();
+            //Connection.DropAndCreateTable<Model>();
+            //Connection.DropAndCreateTable<VehicleType>();
+            if (!Connection.TableExists<Vehicle>())
+            {
+				Connection.DropAndCreateTable<Make>();
+				Connection.DropAndCreateTable<Model>();
+				Connection.DropAndCreateTable<VehicleType>();
+				Connection.CreateTable<Vehicle>();
+            }
 		}
 
 		public override async Task<Vehicle?> GetAsync(int id, CancellationToken token = default)

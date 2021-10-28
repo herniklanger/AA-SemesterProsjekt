@@ -12,13 +12,14 @@ using ServiceStack.OrmLite;
 
 namespace FleetTest
 {
-    public class FleetSystemContainer : IDisposable
+    public class FleetSystemContainer
     {
-        protected readonly IServiceScope scope;
+        protected readonly WebApplicationFactory<Startup> app;
         protected readonly HttpClient TestClient;
+        
         protected FleetSystemContainer()
         {
-            var appFactory = new WebApplicationFactory<Startup>()
+            app = new WebApplicationFactory<Startup>()
                 .WithWebHostBuilder(builder =>
                 {
                     builder.ConfigureServices(services =>
@@ -26,20 +27,15 @@ namespace FleetTest
                         services.RemoveAll(typeof(IDbConnection));
                         services.RemoveAll(typeof(IDbConnectionFactory));
                         services.AddSingleton<IDbConnection>(options => new SQLiteConnection(":memory:"));
-                        services.AddSingleton<IDbConnectionFactory>(options => {
+                        services.AddSingleton<IDbConnectionFactory>(options =>
+                        {
                             IDbConnection connection = options.GetService<IDbConnection>();
                             OrmLiteConnectionFactory connectionFactory = new(connection.ConnectionString, SqliteDialect.Provider);
                             return connectionFactory;
                         });
                     });
                 });
-            TestClient = appFactory.CreateClient();
-            scope = appFactory.Services.CreateScope();
-        }
-
-        public void Dispose()
-        {
-            scope.Dispose();
+            TestClient = app.CreateClient();
         }
     }
 }
