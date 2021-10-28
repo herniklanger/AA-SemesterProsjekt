@@ -13,6 +13,6 @@ namespace Fleet.DataBaseLayre.Models
 		public string Name { get; set; }
 		[JsonIgnore]
 		[Reference]
-		public List<Vehicle> Vehicles { get; set; }
+		public List<Vehicle>? Vehicles { get; set; }
 	}
 }

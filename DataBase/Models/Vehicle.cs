@@ -6,7 +6,7 @@ using ServiceStack.DataAnnotations;
 
 namespace Fleet.DataBaseLayre.Models
 {
-	public class Vehicle : IVehicle<VehicleType, Make, Model>, IEntity<int>
+	public record Vehicle : IVehicle<VehicleType, Make, Model>, IEntity<int>
 	{
 		[AutoIncrement]
 		public int Id { get; set; }
@@ -18,19 +18,16 @@ namespace Fleet.DataBaseLayre.Models
 		[Reference]
 		public VehicleType VehicleType { get; set; }
 		[JsonIgnore]
-		//[ForeignKey(typeof(VehicleType))]
 		public int VehicleTypeId { get; set; }
 
 		[Reference]
 		public Make Make { get; set; }
 		[JsonIgnore]
-		//[ForeignKey(typeof(Make))]
 		public int MakeId { get; set; }
 
 		[Reference]
 		public Model Model { get; set; }
 		[JsonIgnore]
-		//[ForeignKey(typeof(Model))]
 		public int ModelId { get; set; }
 	}
 }

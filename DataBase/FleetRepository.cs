@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Fleet.DataBaseLayre.Models;
@@ -14,9 +15,21 @@ namespace Fleet.DataBaseLayre
 	{
 		public FleetRepository(IDbConnectionFactory connection) : base(connection)
 		{
-			Connection.DropAndCreateTable<VehicleType>();
+			Connection.DropTable<Vehicle>();
 			Connection.DropAndCreateTable<Make>();
 			Connection.DropAndCreateTable<Model>();
+			Connection.DropAndCreateTable<VehicleType>();
+			Connection.CreateTable<Vehicle>();
+		}
+
+		public override async Task<Vehicle?> GetAsync(int id, CancellationToken token = default)
+		{
+			var q = Connection.From<Vehicle>()
+				.Join<Make>()
+				.Join<Model>()
+				.Join<VehicleType>()
+				.Where(vehicle => vehicle.Id == id);
+			return (await Connection.SelectAsync(q, token)).FirstOrDefault();
 		}
 
 		public override async Task<IEnumerable<Vehicle>> GetAllAsync(CancellationToken token = default)
