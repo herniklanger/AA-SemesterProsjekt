@@ -7,7 +7,8 @@ using Fleet;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-
+using ServiceStack.Data;
+using ServiceStack.OrmLite;
 
 namespace FleetTest
 {
@@ -22,8 +23,14 @@ namespace FleetTest
                 {
                     builder.ConfigureServices(services =>
                     {
-                        //services.RemoveAll(typeof(IDbConnection));
-                        //services.AddSingleton<IDbConnection>(options => new SQLiteConnection(":memory:"));
+                        services.RemoveAll(typeof(IDbConnection));
+                        services.RemoveAll(typeof(IDbConnectionFactory));
+                        services.AddSingleton<IDbConnection>(options => new SQLiteConnection(":memory:"));
+                        services.AddSingleton<IDbConnectionFactory>(options => {
+                            IDbConnection connection = options.GetService<IDbConnection>();
+                            OrmLiteConnectionFactory connectionFactory = new(connection.ConnectionString, SqliteDialect.Provider);
+                            return connectionFactory;
+                        });
                     });
                 });
             services = appFactory.Services;

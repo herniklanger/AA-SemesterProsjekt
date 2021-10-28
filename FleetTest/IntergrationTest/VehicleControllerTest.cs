@@ -34,11 +34,11 @@ namespace FleetTest.IntergrationTest
 		public async Task CreateAll_Vehicles(Vehicle vehicle)
 		{
 			//Arrange
-
+			
 			//Act
 			var resoult = await TestClient.PostAsJsonAsync("api/Vehicle", vehicle);
 			//Assert
-			Assert.True(resoult.IsSuccessStatusCode);
+			Assert.True(resoult.IsSuccessStatusCode, await resoult.Content.ReadAsStringAsync());
 			string resultText = await resoult.Content.ReadAsStringAsync();
 			Assert.NotEmpty(resultText);
 
