@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Fleet.DataBaseLayre.Models;
+using Fleet.Interfaces;
 using InterfacesLib;
 using ServiceStack.Data;
 using ServiceStack.OrmLite;
@@ -9,7 +10,7 @@ using ServiceStack.OrmLite.Dapper;
 
 namespace Fleet.DataBaseLayre
 {
-	public class FleetRepository : Repository<Vehicle>
+	public class FleetRepository : Repository<Vehicle>, IFleetRepository
 	{
 		public FleetRepository(IDbConnectionFactory connection) : base(connection)
 		{

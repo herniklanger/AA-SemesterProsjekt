@@ -22,8 +22,8 @@ namespace FleetTest
                 {
                     builder.ConfigureServices(services =>
                     {
-                        services.RemoveAll(typeof(IDbConnection));
-                        services.AddSingleton<IDbConnection>(options => new SQLiteConnection(":memory:"));
+                        //services.RemoveAll(typeof(IDbConnection));
+                        //services.AddSingleton<IDbConnection>(options => new SQLiteConnection(":memory:"));
                     });
                 });
             services = appFactory.Services;

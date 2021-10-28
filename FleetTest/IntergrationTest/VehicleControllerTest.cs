@@ -19,12 +19,11 @@ namespace FleetTest.IntergrationTest
 
 			//Act
 			HttpResponseMessage response = await TestClient.GetAsync("api/Vehicle");
+			
 			//Assert
 			Assert.True(response.IsSuccessStatusCode);
-
 			string resultText = await response.Content.ReadAsStringAsync();
 			Assert.NotEmpty(resultText);
-
 			List<Vehicle> resultObject = JsonConvert.DeserializeObject<List<Vehicle>>(resultText);
 			Assert.Empty(resultObject);
 		}
@@ -54,7 +53,7 @@ namespace FleetTest.IntergrationTest
 
 		[Theory]
 		[MemberData(nameof(CreateAndGet_VehicleData))]
-		public async Task CreateAndGet_Vehicle(Vehicle vehicle)
+		public async Task Get_Vehicle(Vehicle vehicle)
 		{
 			//Arrange
 			IRepository<Vehicle, int> db = services.GetService(typeof(IRepository<Vehicle, int>)) as IRepository<Vehicle, int>;

@@ -20,6 +20,9 @@ using System.Data.SqlClient;
 using ServiceStack.Data;
 using ServiceStack.OrmLite.Sqlite;
 using ServiceStack.OrmLite.SqlServer;
+using InterfacesLib;
+using Fleet.DataBaseLayre.Models;
+using Fleet.Interfaces;
 
 namespace Fleet
 {
@@ -36,9 +39,12 @@ namespace Fleet
 		public void ConfigureServices(IServiceCollection services)
 		{
 			var sqLiteConnection = new SqlConnection("Data Source=den1.mssql7.gear.host;Integrated Security=false;User ID=aasemterprosjekt;Password=Jj2E8-?GYtyq;");
+			//var sqLiteConnection = new SQLiteConnection(":memory:");
 
 			services.AddSingleton<IDbConnection>(sqLiteConnection);
-			services.AddSingleton<FleetRepository>();
+			services.AddScoped<FleetRepository>();
+			services.AddScoped<IRepository<Vehicle, int>>(x=> x.GetService<FleetRepository>());
+			services.AddScoped<IFleetRepository>(x => x.GetService<FleetRepository>());
 
 			OrmLiteConfig.DialectProvider = new SqlServerOrmLiteDialectProvider();
 			OrmLiteConfig.DialectProvider.NamingStrategy = new OrmLiteNamingStrategyBase();

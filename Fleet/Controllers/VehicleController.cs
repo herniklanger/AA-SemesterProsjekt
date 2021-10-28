@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Fleet.DataBaseLayre.Models;
+using Fleet.Interfaces;
+using InterfacesLib;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -14,11 +16,13 @@ namespace Fleet.Controllers
 	[ApiController]
 	public class VehicleController : ControllerBase
 	{
-		private readonly FleetRepository _fleetRepository;
+		private readonly IRepository<Vehicle, int> _repository;
+		private readonly IFleetRepository _fleetRepository;
 
-		public VehicleController(FleetRepository fleetRepository)
+		public VehicleController(IRepository<Vehicle,int> repository, IFleetRepository fleetRepository)
 		{
 			_fleetRepository = fleetRepository;
+			_repository = repository;
 		}
 
 
@@ -33,14 +37,14 @@ namespace Fleet.Controllers
 		[HttpGet]
 		public async Task<IEnumerable<Vehicle>> Get(CancellationToken cancellationToken = new())
 		{
-			return await _fleetRepository.GetAllAsync(cancellationToken);
+			return await _repository.GetAllAsync(cancellationToken);
 		}
 
 		// GET api/<Vehicle>/5
 		[HttpGet("{id}")]
 		public async Task<ActionResult<Vehicle?>> Get(int id, CancellationToken cancellationToken = new())
 		{
-			var vehicle = await _fleetRepository.GetAsync(id, cancellationToken);
+			var vehicle = await _repository.GetAsync(id, cancellationToken);
 			if (vehicle is null)
 			{
 				return BadRequest();
@@ -53,8 +57,8 @@ namespace Fleet.Controllers
 		[HttpPost]
 		public async Task<ActionResult<Vehicle>> Post([FromBody] Vehicle value, CancellationToken cancellationToken = new())
 		{
-			var id = await _fleetRepository.CreateAsync(value, cancellationToken);
-			var vehicle = await _fleetRepository.GetAsync(id, cancellationToken);
+			var id = await _repository.CreateAsync(value, cancellationToken);
+			var vehicle = await _repository.GetAsync(id, cancellationToken);
 
 			return vehicle is not null 
 				? Ok(vehicle) 
@@ -66,8 +70,8 @@ namespace Fleet.Controllers
 		public async Task<ActionResult<Vehicle>> Put(int id, [FromBody] Vehicle value, CancellationToken cancellationToken = new())
 		{
 			value.Id = id;
-			var updatedId = await _fleetRepository.UpdateAsync(value, cancellationToken);
-			var vehicle = await _fleetRepository.GetAsync(updatedId, cancellationToken);
+			var updatedId = await _repository.UpdateAsync(value, cancellationToken);
+			var vehicle = await _repository.GetAsync(updatedId, cancellationToken);
 
 			return vehicle is not null
 				? Ok(vehicle)
@@ -78,7 +82,7 @@ namespace Fleet.Controllers
 		[HttpDelete("{id}")]
 		public async Task<ActionResult> Delete(int id, CancellationToken cancellationToken = new())
 		{
-			await _fleetRepository.DeleteAsync(id, cancellationToken);
+			await _repository.DeleteAsync(id, cancellationToken);
 			return Ok();
 		}
 	}
