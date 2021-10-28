@@ -60,7 +60,7 @@ namespace Fleet.DataBaseLayre
 		/// <inheritdoc cref="UpdateAsync"/>
 		/// If the <paramref name="entity"/> already exists.
 		/// </summary>
-		public async Task<object?> UpsertAsync(TEntity entity, CancellationToken token = default)
+		public async Task<int> UpsertAsync(TEntity entity, CancellationToken token = default)
 		{
 			return await ExistsAsync(entity.Id, token)
 				? await UpdateAsync(entity, token)
