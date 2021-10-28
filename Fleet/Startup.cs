@@ -30,7 +30,7 @@ namespace Fleet
         public void ConfigureServices(IServiceCollection services)
         {
             //var sqLiteConnection = new SqlConnection("Data Source=den1.mssql7.gear.host;Integrated Security=false;User ID=aasemterprosjekt;Password=Jj2E8-?GYtyq;");
-            var sqLiteConnection = new SQLiteConnection("test.db");
+            var sqLiteConnection = new SQLiteConnection(":memory:");
 
             services.AddSingleton<IDbConnection>(sqLiteConnection);
             services.AddScoped<FleetRepository>();
