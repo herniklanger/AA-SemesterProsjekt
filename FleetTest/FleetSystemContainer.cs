@@ -12,9 +12,9 @@ using ServiceStack.OrmLite;
 
 namespace FleetTest
 {
-    public class FleetSystemContainer
+    public class FleetSystemContainer : IDisposable
     {
-        protected readonly IServiceProvider services;
+        protected readonly IServiceScope scope;
         protected readonly HttpClient TestClient;
         protected FleetSystemContainer()
         {
@@ -33,8 +33,13 @@ namespace FleetTest
                         });
                     });
                 });
-            services = appFactory.Services;
             TestClient = appFactory.CreateClient();
+            scope = appFactory.Services.CreateScope();
+        }
+
+        public void Dispose()
+        {
+            scope.Dispose();
         }
     }
 }
