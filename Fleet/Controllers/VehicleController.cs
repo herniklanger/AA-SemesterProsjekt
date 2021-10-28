@@ -57,7 +57,7 @@ namespace Fleet.Controllers
 		[HttpPost]
 		public async Task<ActionResult<Vehicle>> Post([FromBody] Vehicle value, CancellationToken cancellationToken = new())
 		{
-			var id = await _repository.CreateAsync(value, cancellationToken);
+			var id = await _repository.UpsertAsync(value, cancellationToken);
 			var vehicle = await _repository.GetAsync(id, cancellationToken);
 
 			return vehicle is not null 
