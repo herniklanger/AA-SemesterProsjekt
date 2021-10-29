@@ -21,4 +21,10 @@
     <ItemGroup>
         <SupportedPlatform Include="browser" />
     </ItemGroup>
+
+    <ItemGroup>
+      <None Update="Pages\Index.razor.css">
+        <DependentUpon>Index.razor</DependentUpon>
+      </None>
+    </ItemGroup>
 </Project>

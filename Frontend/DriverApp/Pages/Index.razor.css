@@ -1,0 +1,12 @@
+﻿
+
+input.input
+{
+    border: 1px solid #0f4d24; 
+    color: #0f4d24; 
+    box-shadow: 0 3px 6px #0f4d24;
+}
+input.input::placeholder { 
+    color: #0f4d24;
+    opacity: 80%; 
+}
