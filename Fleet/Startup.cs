@@ -50,7 +50,7 @@ namespace Fleet
                 return connectionFactory;
             });
 
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Fleet", Version = "v1" });

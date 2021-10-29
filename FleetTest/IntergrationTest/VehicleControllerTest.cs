@@ -1,4 +1,3 @@
-using System.Text.Json;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -27,7 +26,7 @@ namespace FleetTest.IntergrationTest
 			Assert.True(response.IsSuccessStatusCode, await response.Content.ReadAsStringAsync());
 			string resultText = await response.Content.ReadAsStringAsync();
 			Assert.NotEmpty(resultText);
-			List<Vehicle> resultObject = System.Text.Json.JsonSerializer.Deserialize<List<Vehicle>>(resultText);
+			List<Vehicle> resultObject = JsonConvert.DeserializeObject<List<Vehicle>>(resultText);
 			Assert.Empty(resultObject);
 		}
 
@@ -36,6 +35,7 @@ namespace FleetTest.IntergrationTest
 		[MemberData(nameof(CreateAndGet_VehicleData))]
 		public async Task CreateAll_Vehicles(Vehicle vehicle)
 		{
+			var test = JsonConvert.SerializeObject(vehicle);
 			//Arrange
 			using (var scope = app.Server.Services.CreateScope())
             {
@@ -50,7 +50,7 @@ namespace FleetTest.IntergrationTest
 
 				IRepository<Vehicle, int> db = scope.ServiceProvider.GetService(typeof(FleetRepository)) as FleetRepository;
 				Vehicle expedetResoult = await db.GetAsync(resultObject.Id);
-				string expedetText = System.Text.Json.JsonSerializer.Serialize(expedetResoult);
+				string expedetText = JsonConvert.SerializeObject(expedetResoult);
 				Assert.Equal(expedetText.ToLower(), resultText.ToLower());
             }
 		}
@@ -80,7 +80,7 @@ namespace FleetTest.IntergrationTest
 			string resultText = await response.Content.ReadAsStringAsync();
 			Assert.NotEmpty(resultText);
 
-			string ExpedetText = System.Text.Json.JsonSerializer.Serialize(Resoult);
+			string ExpedetText = JsonConvert.SerializeObject(Resoult);
 			Assert.Equal(ExpedetText.ToLower(), resultText.ToLower());
 		}
 	  	public static IEnumerable<object[]> CreateAndGet_VehicleData()

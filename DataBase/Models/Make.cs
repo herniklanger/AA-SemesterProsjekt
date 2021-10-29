@@ -2,7 +2,7 @@
 using InterfacesLib.Fleet;
 using ServiceStack.DataAnnotations;
 using System.Collections.Generic;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace Fleet.DataBaseLayre.Models
 {
