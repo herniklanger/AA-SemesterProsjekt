@@ -1,7 +1,7 @@
 using System;
 using Xunit;
 
-namespace Route.IntegrationTest
+namespace Route.Test
 {
     public class UnitTest1
     {
