@@ -26,11 +26,12 @@ namespace Fleet.Controllers
 		}
 
 
-		// GET: api/Vehicle
+		// GET: api/Vehicle/ByMake
 		[HttpGet("ByMake")]
 		public async Task<IEnumerable<Vehicle>> GetByMake([FromQuery] string make, CancellationToken cancellationToken = new())
 		{
-			return await _fleetRepository.GetByMake(make, cancellationToken);
+			IEnumerable<Vehicle> value = await _fleetRepository.GetByMake(make, cancellationToken);
+			return value;
 		}
 
 		// GET: api/Vehicle
@@ -40,7 +41,7 @@ namespace Fleet.Controllers
 			return await _repository.GetAllAsync(cancellationToken);
 		}
 
-		// GET api/<Vehicle>/5
+		// GET api/Vehicle/<id>
 		[HttpGet("{id}")]
 		public async Task<ActionResult<Vehicle?>> Get(int id, CancellationToken cancellationToken = new())
 		{
@@ -53,7 +54,7 @@ namespace Fleet.Controllers
 			return Ok(vehicle);
 		}
 
-		// POST api/<Vehicle>
+		// POST api/Vehicle
 		[HttpPost]
 		public async Task<ActionResult<Vehicle>> Post([FromBody] Vehicle value, CancellationToken cancellationToken = new())
 		{
@@ -65,7 +66,7 @@ namespace Fleet.Controllers
 				: StatusCode(500);
 		}
 
-		// PUT api/<Vehicle>/5
+		// PUT api/Vehicle/<id>
 		[HttpPut("{id}")]
 		public async Task<ActionResult<Vehicle>> Put(int id, [FromBody] Vehicle value, CancellationToken cancellationToken = new())
 		{

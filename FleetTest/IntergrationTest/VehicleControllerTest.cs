@@ -33,7 +33,7 @@ namespace FleetTest.IntergrationTest
 
 		[Theory]
 		[MemberData(nameof(CreateAndGet_VehicleData))]
-		public async Task CreateAll_Vehicles(Vehicle vehicle)
+		public async Task Create_Vehicles(Vehicle vehicle)
 		{
 			var test = JsonConvert.SerializeObject(vehicle);
 			//Arrange
@@ -58,11 +58,11 @@ namespace FleetTest.IntergrationTest
 
 		[Theory]
 		[MemberData(nameof(CreateAndGet_VehicleData))]
-		public async Task Get_Vehicle(Vehicle vehicle)
+		public async Task Get_Vehicle_By_Id(Vehicle vehicle)
 		{
 			//Arrange
 			int test;
-			Vehicle Resoult = null;
+			Vehicle Resoult =null;
 			using (var scope = app.Services.CreateScope())
             {
 				var services = scope.ServiceProvider;
@@ -73,6 +73,33 @@ namespace FleetTest.IntergrationTest
 			Resoult.Id = test;
 			//Act
 			HttpResponseMessage response = await TestClient.GetAsync($"api/Vehicle/{test}");
+
+			//Assert
+			Assert.True(response.IsSuccessStatusCode, await response.Content.ReadAsStringAsync());
+
+			string resultText = await response.Content.ReadAsStringAsync();
+			Assert.NotEmpty(resultText);
+			
+			string ExpedetText = JsonConvert.SerializeObject(Resoult);
+			Assert.Equal(ExpedetText.ToLower(), resultText.ToLower());
+		}
+		[Theory]
+		[MemberData(nameof(CreateAndGet_VehicleData))]
+		public async Task Get_Vehicle_By_MakeName(Vehicle vehicle)
+		{
+			//Arrange
+			int test;
+			Vehicle[] Resoult = new[] { vehicle };
+			using (var scope = app.Services.CreateScope())
+            {
+				var services = scope.ServiceProvider;
+				FleetRepository db = services.GetService(typeof(FleetRepository)) as FleetRepository;
+				
+				int ObjectId = await db.UpsertAsync(vehicle);
+				Resoult[0].Id = ObjectId/*{ await db.GetAsync(ObjectId) }*/;
+			}
+			//Act
+			HttpResponseMessage response = await TestClient.GetAsync($"api/Vehicle/ByMake?make={vehicle.Make.Name}");
 
 			//Assert
 			Assert.True(response.IsSuccessStatusCode, await response.Content.ReadAsStringAsync());
@@ -91,7 +118,7 @@ namespace FleetTest.IntergrationTest
 			{
 				Licenseplate = "CF24542",
 				ModelType = "Diesel",
-				RegisteringsDate = dateTime,
+				//RegisteringsDate = dateTime,
 				Make = new Make
 				{
 					Name = "Chevrolet"

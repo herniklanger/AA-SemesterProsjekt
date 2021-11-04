@@ -49,7 +49,15 @@ namespace Fleet.DataBaseLayre
 
 		public async Task<IEnumerable<Vehicle>> GetByMake(string make, CancellationToken cancellationToken = new())
 		{
-			var query = "select * from Vehicle V where V.ModelType == @make";
+			var query = 
+			@"select * 
+			from Vehicle 
+			JOIN Make On Make.Id = Vehicle.MakeId
+			WHERE Make.Name = @make;";
+			Connection.From<Vehicle>()
+				.Join<Make>()
+				.Join<Model>()
+				.Join<VehicleType>();
 			return await Connection.QueryAsync<Vehicle>(query, new { make });
 		}
 	}
