@@ -7,12 +7,12 @@ using Route;
 
 namespace FleetTest
 {
-    public class FleetSystemContainer
+    public class RouteSystemContainer
     {
         protected readonly WebApplicationFactory<Startup> app;
         protected readonly HttpClient TestClient;
         
-        protected FleetSystemContainer()
+        protected RouteSystemContainer()
         {
             app = new WebApplicationFactory<Startup>()
                 .WithWebHostBuilder(builder =>
