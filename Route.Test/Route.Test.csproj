@@ -21,6 +21,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\InterfacesLib\InterfacesLib.csproj" />
+    <ProjectReference Include="..\Route.DataBaseLayre\Route.DataBaseLayre.csproj" />
     <ProjectReference Include="..\Route\Route.csproj" />
   </ItemGroup>
 
