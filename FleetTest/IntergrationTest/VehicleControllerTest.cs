@@ -6,9 +6,15 @@ using System.Threading.Tasks;
 using Fleet.DataBaseLayre.Models;
 using Xunit;
 using System;
+using System.Data;
+using System.Linq;
 using InterfacesLib;
 using Fleet.DataBaseLayre;
+using Fleet.DataBaseLayre.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
+using ServiceStack.Data;
+using ServiceStack.OrmLite;
+using ServiceStack.OrmLite.Dapper;
 
 namespace FleetTest.IntergrationTest
 {
@@ -61,26 +67,24 @@ namespace FleetTest.IntergrationTest
 		public async Task Get_Vehicle_By_Id(Vehicle vehicle)
 		{
 			//Arrange
-			int test;
-			Vehicle Resoult =null;
+			int Id;
 			using (var scope = app.Services.CreateScope())
             {
 				var services = scope.ServiceProvider;
 				FleetRepository db = services.GetService(typeof(FleetRepository)) as FleetRepository;
-				test = await db.UpsertAsync(vehicle);
-				Resoult = await db.GetAsync(test);
+				Id = await db.UpsertAsync(vehicle);
 			}
-			Resoult.Id = test;
+			
 			//Act
-			HttpResponseMessage response = await TestClient.GetAsync($"api/Vehicle/{test}");
+			HttpResponseMessage response = await TestClient.GetAsync($"api/Vehicle/{Id}");
 
 			//Assert
 			Assert.True(response.IsSuccessStatusCode, await response.Content.ReadAsStringAsync());
-
+			
 			string resultText = await response.Content.ReadAsStringAsync();
 			Assert.NotEmpty(resultText);
 			
-			string ExpedetText = JsonConvert.SerializeObject(Resoult);
+			string ExpedetText = JsonConvert.SerializeObject(vehicle);
 			Assert.Equal(ExpedetText.ToLower(), resultText.ToLower());
 		}
 		[Theory]
@@ -88,7 +92,7 @@ namespace FleetTest.IntergrationTest
 		public async Task Get_Vehicle_By_MakeName(Vehicle vehicle)
 		{
 			//Arrange
-			int test;
+			Make make = vehicle.Make;
 			Vehicle[] Resoult = new[] { vehicle };
 			using (var scope = app.Services.CreateScope())
             {
@@ -98,8 +102,11 @@ namespace FleetTest.IntergrationTest
 				int ObjectId = await db.UpsertAsync(vehicle);
 				Resoult[0].Id = ObjectId/*{ await db.GetAsync(ObjectId) }*/;
 			}
+			vehicle.Make = null;
+			vehicle.Model = null;
+			vehicle.VehicleType = null;
 			//Act
-			HttpResponseMessage response = await TestClient.GetAsync($"api/Vehicle/ByMake?make={vehicle.Make.Name}");
+			HttpResponseMessage response = await TestClient.GetAsync($"api/Vehicle/ByMake?make={make.Name}");
 
 			//Assert
 			Assert.True(response.IsSuccessStatusCode, await response.Content.ReadAsStringAsync());
@@ -110,7 +117,36 @@ namespace FleetTest.IntergrationTest
 			string ExpedetText = JsonConvert.SerializeObject(Resoult);
 			Assert.Equal(ExpedetText.ToLower(), resultText.ToLower());
 		}
-	  	public static IEnumerable<object[]> CreateAndGet_VehicleData()
+		[Theory]
+		[MemberData(nameof(CreateAndGet_VehicleData))]
+		public async Task Delete_Vehicle_By_Id(Vehicle vehicle)
+		{
+			//Arrange
+			int Id;
+			using (var scope = app.Services.CreateScope())
+			{
+				var services = scope.ServiceProvider;
+				services.GetService(typeof(IFleetRepository));
+				
+				IDbConnection db = (services.GetService(typeof(IDbConnectionFactory)) as IDbConnectionFactory).OpenDbConnection();
+				await db.SaveAsync(vehicle, true);//Add 1 vehicle
+				int deleateId = vehicle.Id;
+				vehicle.Id = 0;
+				await db.SaveAsync(vehicle, true);//Add 2 vegicle
+				int Before = db.Query<int>("SELECT COUNT(*) FROM Vehicle").FirstOrDefault();
+				
+				//Act
+				HttpResponseMessage response = await TestClient.DeleteAsync($"api/Vehicle/{deleateId}");
+				
+				//Assert
+				Assert.True(response.IsSuccessStatusCode, await response.Content.ReadAsStringAsync());
+
+				int Afer = db.Query<int>("SELECT COUNT(*) FROM Vehicle").FirstOrDefault();
+				Assert.Equal(Before - 1, Afer);
+			}
+		}
+
+		public static IEnumerable<object[]> CreateAndGet_VehicleData()
         {
 			DateTime dateTime = DateTime.Now;
 			yield return new object[] {

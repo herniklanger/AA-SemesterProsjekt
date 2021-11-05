@@ -8,6 +8,7 @@ using InterfacesLib;
 using ServiceStack.Data;
 using ServiceStack.OrmLite;
 using ServiceStack.OrmLite.Dapper;
+using ServiceStack.Text;
 
 namespace Fleet.DataBaseLayre
 {
@@ -29,7 +30,9 @@ namespace Fleet.DataBaseLayre
 
         public virtual async Task<TEntity?> GetAsync(int id, CancellationToken token = default)
         {
-            return (await Connection.SelectAsync<TEntity>(entity => entity.Id.Equals(id), token: token)).FirstOrDefault();
+            var test = await Connection.LoadSingleByIdAsync<TEntity>(id);
+            Console.WriteLine( test.Dump());
+            return test;
         }
 
         public virtual async Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken token = default)
@@ -45,7 +48,7 @@ namespace Fleet.DataBaseLayre
 
         public virtual async Task<int> DeleteAsync(int id, CancellationToken token = default)
         {
-            return await Connection.DeleteAsync<TEntity>(id, token: token);
+            return await Connection.DeleteByIdAsync<TEntity>(id, token: token);
         }
 
         public virtual async Task<int> DeleteAsync(TEntity entity, CancellationToken token = default)

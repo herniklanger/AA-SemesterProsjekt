@@ -28,7 +28,7 @@ namespace Fleet.DataBaseLayre
             }
 		}
 
-		public override async Task<Vehicle?> GetAsync(int id, CancellationToken token = default)
+		/*public override async Task<Vehicle?> GetAsync(int id, CancellationToken token = default)
 		{
 			var q = Connection.From<Vehicle>()
 				.Join<Make>()
@@ -36,7 +36,7 @@ namespace Fleet.DataBaseLayre
 				.Join<VehicleType>()
 				.Where(vehicle => vehicle.Id == id);
 			return (await Connection.SelectAsync(q, token)).FirstOrDefault();
-		}
+		}*/
 
 		public override async Task<IEnumerable<Vehicle>> GetAllAsync(CancellationToken token = default)
 		{
