@@ -24,9 +24,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PublicWeb", "PublicWeb", "{390E70BF-4116-4674-BB78-CC835974FD74}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Route", "Route", "{315E4C4F-97E9-4C08-87C5-72DC51F52A39}"
-	ProjectSection(SolutionItems) = preProject
-		Route.Test\Route.Test.csproj = Route.Test\Route.Test.csproj
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Container", "Container", "{429EB1D7-8733-499B-A59F-990EBB06C338}"
 EndProject
@@ -62,7 +59,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Route.DataBaseLayre", "Rout
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Route.BusinesseLayre", "Route.BusinesseLayre\Route.BusinesseLayre.csproj", "{4E5710FF-1F3D-4340-9F63-44F09F79A67E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Route.Test", "Route.Test\Route.Test.csproj", "{9385B9A9-5D68-4CD3-941F-9BBC50FC35F4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Route.Test", "Route.Test\Route.Test.csproj", "{9385B9A9-5D68-4CD3-941F-9BBC50FC35F4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
