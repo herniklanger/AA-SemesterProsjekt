@@ -8,7 +8,6 @@ using InterfacesLib;
 using ServiceStack.Data;
 using ServiceStack.OrmLite;
 using ServiceStack.OrmLite.Dapper;
-using ServiceStack.Text;
 
 namespace Fleet.DataBaseLayre
 {
