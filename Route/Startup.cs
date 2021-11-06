@@ -9,6 +9,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -26,6 +28,12 @@ namespace Route
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var sqLiteConnection = new SqlConnection("Server=den1.mssql7.gear.host;Database=aaroutes;User Id=aaroutes;Password=Ki7u5!vgr3~a;");
+            
+            services.AddSingleton<IDbConnection>(sqLiteConnection);
+            services.AddScoped<RouteRepository>();
+            services.AddScoped<IRepository<Vehicle, int>>(x => x.GetService<FleetRepository>());
+            services.AddScoped<IFleetRepository>(x => x.GetService<FleetRepository>());
 
             services.AddControllers().AddNewtonsoftJson();
             services.AddSwaggerGen(c =>
