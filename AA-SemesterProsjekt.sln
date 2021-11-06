@@ -61,6 +61,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Route.BusinesseLayre", "Rou
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Route.Test", "Route.Test\Route.Test.csproj", "{9385B9A9-5D68-4CD3-941F-9BBC50FC35F4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseLayerCore", "DatabaseLayerCore\DatabaseLayerCore.csproj", "{8B8F5821-87EF-49C7-B2E0-3DE94103CC0F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -123,6 +125,10 @@ Global
 		{9385B9A9-5D68-4CD3-941F-9BBC50FC35F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9385B9A9-5D68-4CD3-941F-9BBC50FC35F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9385B9A9-5D68-4CD3-941F-9BBC50FC35F4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B8F5821-87EF-49C7-B2E0-3DE94103CC0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B8F5821-87EF-49C7-B2E0-3DE94103CC0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B8F5821-87EF-49C7-B2E0-3DE94103CC0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B8F5821-87EF-49C7-B2E0-3DE94103CC0F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -145,6 +151,7 @@ Global
 		{0ACC1A53-18D0-4FF5-A551-3382D7670FA5} = {315E4C4F-97E9-4C08-87C5-72DC51F52A39}
 		{4E5710FF-1F3D-4340-9F63-44F09F79A67E} = {315E4C4F-97E9-4C08-87C5-72DC51F52A39}
 		{9385B9A9-5D68-4CD3-941F-9BBC50FC35F4} = {315E4C4F-97E9-4C08-87C5-72DC51F52A39}
+		{8B8F5821-87EF-49C7-B2E0-3DE94103CC0F} = {72BE9B47-6022-463C-9AB5-3B184DE5C30A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {87E98DFA-C391-402B-AE50-A6F16EAA9AF7}

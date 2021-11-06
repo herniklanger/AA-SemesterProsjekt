@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 using InterfacesLib;
 using ServiceStack.Data;
 using ServiceStack.OrmLite;
-using ServiceStack.OrmLite.Dapper;
 
-namespace Route.DataBaseLayre
+namespace DatabaseLayerCore
 {
     public abstract class Repository<TEntity> : IRepository<TEntity, int>
         where TEntity : class, IEntity<int>
