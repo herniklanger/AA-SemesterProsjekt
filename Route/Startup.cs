@@ -13,6 +13,12 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
+using InterfacesLib;
+using Route.DataBaseLayre;
+using Route.DataBaseLayre.Models;
+using ServiceStack.Data;
+using ServiceStack.OrmLite;
+using ServiceStack.OrmLite.SqlServer;
 
 namespace Route
 {
@@ -32,9 +38,22 @@ namespace Route
             
             services.AddSingleton<IDbConnection>(sqLiteConnection);
             services.AddScoped<RouteRepository>();
-            services.AddScoped<IRepository<Vehicle, int>>(x => x.GetService<FleetRepository>());
-            services.AddScoped<IFleetRepository>(x => x.GetService<FleetRepository>());
+            services.AddScoped<IRepository<DataBaseLayre.Models.Route, int>>(x => x.GetService<RouteRepository>());
 
+            OrmLiteConfig.DialectProvider = new SqlServerOrmLiteDialectProvider();
+            OrmLiteConfig.DialectProvider.NamingStrategy = new OrmLiteNamingStrategyBase();
+
+            services.AddSingleton<IDbConnectionFactory>(c =>
+            {
+                var connection = c.GetRequiredService<IDbConnection>();
+
+                IOrmLiteDialectProvider provider = new SqlServerOrmLiteDialectProvider();
+
+                var connectionFactory = new OrmLiteConnectionFactory(connection.ConnectionString, provider);
+
+                return connectionFactory;
+            });
+            
             services.AddControllers().AddNewtonsoftJson();
             services.AddSwaggerGen(c =>
             {
