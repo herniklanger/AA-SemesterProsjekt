@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\DatabaseLayerCore\DatabaseLayerCore.csproj" />
     <ProjectReference Include="..\InterfacesLib\InterfacesLib.csproj" />
   </ItemGroup>
 

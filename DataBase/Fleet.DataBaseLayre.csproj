@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Businesslogic\Fleet.Businesslogic.csproj" />
+    <ProjectReference Include="..\DatabaseLayerCore\DatabaseLayerCore.csproj" />
   </ItemGroup>
 
 </Project>
