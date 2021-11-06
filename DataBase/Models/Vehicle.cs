@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 using InterfacesLib;
 using InterfacesLib.Fleet;
 using ServiceStack.DataAnnotations;

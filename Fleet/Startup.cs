@@ -1,6 +1,5 @@
 using Fleet.DataBaseLayre;
 using Fleet.DataBaseLayre.Models;
-using Fleet.Interfaces;
 using InterfacesLib;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -14,6 +13,7 @@ using ServiceStack.OrmLite.SqlServer;
 using System.Data;
 using System.Data.SqlClient;
 using System.Data.SQLite;
+using Fleet.DataBaseLayre.Interfaces;
 
 namespace Fleet
 {
@@ -50,7 +50,7 @@ namespace Fleet
                 return connectionFactory;
             });
 
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Fleet", Version = "v1" });

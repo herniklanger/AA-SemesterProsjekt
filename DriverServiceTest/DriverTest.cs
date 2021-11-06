@@ -6,17 +6,17 @@ namespace DriverServiceTest
     public class DriverTest
     {
        //test
-        [Fact]
-        public void GetDriverTest()
-        {
-            //Arrange
-            var driver = new GetCurrentDriver();
+        //[Fact]
+        //public void GetDriverTest()
+        //{
+        //    //Arrange
+        //    var driver = new GetCurrentDriver();
 
-            //Act
-            var result = driver.IsFound();
+        //    //Act
+        //    var result = driver.IsFound();
 
-            //Assert
-            Assert.True(result);
-        }
+        //    //Assert
+        //    Assert.True(result);
+        //}
     }
 }
