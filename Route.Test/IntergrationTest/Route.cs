@@ -48,12 +48,12 @@ namespace Route.Test.IntergrationTest
             {
                 Id = 0,
                 Name = "TestRoute",
-                StartLocation = new Location()
+                StartCheckpoint = new Location()
                 {
                     X = 1.2321M,
                     Y = 2.1234M
                 },
-                EndLocation = new Location()
+                EndCheckpoint = new Location()
                 {
                     X = 2.2341M,
                     Y = 10.2235M
@@ -70,10 +70,10 @@ namespace Route.Test.IntergrationTest
             {
                 Id = 1,
                 Name = "Test",
-                Locations = new List<CustomerLocation>()
+                Locations = new List<Checkpoint>()
             };
             //Create a new CustomerLocations
-            CustomerLocation customerLocation = new ()
+            Checkpoint customerLocation = new ()
             {
                 Id = 0,
                 Location = new Location()
@@ -81,7 +81,7 @@ namespace Route.Test.IntergrationTest
                     X = 1.2321M,
                     Y = 2.1234M
                 },
-                KundeRoutes = new List<RouteLocations>(),
+                RouteLocations = new List<RouteLocations>(),
                 Customers = customer
             };
             //Create a new RouteLocations
@@ -89,11 +89,11 @@ namespace Route.Test.IntergrationTest
             {
                 Id = 0,
                 Route = route,
-                CustomerLocation = customerLocation
+                Checkpoint = customerLocation
             };
             //Add References
             route.RouteLocationsList.Add(routeLocations);
-            customerLocation.KundeRoutes.Add(routeLocations);
+            customerLocation.RouteLocations.Add(routeLocations);
             customer.Locations.Add(customerLocation);
             yield return new []
             {

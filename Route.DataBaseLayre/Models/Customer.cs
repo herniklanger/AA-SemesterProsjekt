@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using InterfacesLib;
+using ServiceStack.DataAnnotations;
 
 namespace Route.DataBaseLayre.Models
 {
@@ -7,6 +8,8 @@ namespace Route.DataBaseLayre.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public List<CustomerLocation> Locations  { get; set; } 
+        
+        [Reference]
+        public List<Checkpoint> Locations  { get; set; } 
     }
 }

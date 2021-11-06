@@ -14,8 +14,8 @@ namespace Route.DataBaseLayre
             {
                 Connection.DropAndCreateTable<Customer>();
                 Connection.DropAndCreateTable<Vehicle>();
-                Connection.DropAndCreateTable<Location>();
                 Connection.DropAndCreateTable<RouteLocations>();
+                Connection.DropAndCreateTable<Checkpoint>();
                 Connection.CreateTable<Models.Route>();
             }
         }
