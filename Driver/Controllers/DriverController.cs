@@ -25,21 +25,21 @@ namespace Driver.Controllers
         }
 
         // GET: api/<DriverController>
-        [HttpGet("GetByDriver")]
-		public async Task<IEnumerable<DriverModel>> GetByMake([FromQuery] string name, CancellationToken cancellationToken = new())
+        [HttpGet("ContactType")]
+		public async Task<IEnumerable<DriverModel>> GetByMake([FromQuery] string contactType, CancellationToken cancellationToken = new())
 		{
-			IEnumerable<DriverModel> value = await _driverRepository.GetByName(name, cancellationToken);
+			IEnumerable<DriverModel> value = await _driverRepository.GetByContactType(contactType, cancellationToken);
 			return value;
 		}
 
-		// GET: api/Vehicle
+		// GET: api/Driver
 		[HttpGet]
 		public async Task<IEnumerable<DriverModel>> Get(CancellationToken cancellationToken = new())
 		{
 			return await _repository.GetAllAsync(cancellationToken);
 		}
 
-		// GET api/Vehicle/<id>
+		// GET api/Driver/<id>
 		[HttpGet("{id}")]
 		public async Task<ActionResult<DriverModel?>> Get(int id, CancellationToken cancellationToken = new())
 		{
@@ -52,7 +52,7 @@ namespace Driver.Controllers
 			return Ok(driver);
 		}
 
-		// POST api/Vehicle
+		// POST api/Driver
 		[HttpPost]
 		public async Task<ActionResult<DriverModel>> Post([FromBody] DriverModel value, CancellationToken cancellationToken = new())
 		{
@@ -64,7 +64,7 @@ namespace Driver.Controllers
 				: StatusCode(500);
 		}
 
-		// PUT api/Vehicle/<id>
+		// PUT api/Driver/<id>
 		[HttpPut("{id}")]
 		public async Task<ActionResult<DriverModel>> Put(int id, [FromBody] DriverModel value, CancellationToken cancellationToken = new())
 		{
@@ -77,7 +77,7 @@ namespace Driver.Controllers
 				: StatusCode(500);
 		}
 
-		// DELETE api/<Vehicle>/5
+		// DELETE api/<Driver>/5
 		[HttpDelete("{id}")]
 		public async Task<ActionResult> Delete(int id, CancellationToken cancellationToken = new())
 		{

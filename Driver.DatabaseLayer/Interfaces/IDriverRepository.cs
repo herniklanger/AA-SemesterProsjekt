@@ -9,6 +9,6 @@ namespace Driver.DatabaseLayer.Interfaces
 {
     public interface IDriverRepository
     {
-        public Task<IEnumerable<DriverModel>> GetByName(string name, CancellationToken cancellationToken = new());
+        public Task<IEnumerable<DriverModel>> GetByContactType(string contactType, CancellationToken cancellationToken = new());
     }
 }
