@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using InterfacesLib.Driver;
+using InterfacesLib;
+using ServiceStack.DataAnnotations;
 
-namespace InterfacesLib.Driver
+namespace Driver.DatabaseLayer.Models
 {
-    public interface IDriver
+    public class DriverModel : IDriverModel, IEntity<int>
     {
+        [AutoIncrement]
         public int Id { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
