@@ -14,6 +14,9 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Data.SQLite;
 using Fleet.DataBaseLayre.Interfaces;
+using Fleet.DataBaseLayre.Models.MessageBus;
+using MassTransit;
+using ServiceStack.Messaging;
 
 namespace Fleet
 {
@@ -31,6 +34,20 @@ namespace Fleet
         {
             var sqLiteConnection = new SqlConnection("Data Source=den1.mssql7.gear.host;Integrated Security=false;User ID=aasemterprosjekt;Password=Jj2E8-?GYtyq;");
 
+            services.AddMassTransit(x =>
+            {
+                x.AddConsumer<MessagesConsumer>();
+                x.UsingRabbitMq((context, cfg) =>
+                {
+                    cfg.ConfigureEndpoints(context);
+                    cfg.Host("rabbitmq://localhost", h =>
+                    {
+                        // h.Username("aasemterprosjekt");
+                        // h.Password("Jj2E8-?GYtyq");
+                    });
+                });
+            });
+            services.AddMassTransitHostedService();
             services.AddSingleton<IDbConnection>(sqLiteConnection);
             services.AddScoped<FleetRepository>();
             services.AddScoped<IRepository<Vehicle, int>>(x => x.GetService<FleetRepository>());

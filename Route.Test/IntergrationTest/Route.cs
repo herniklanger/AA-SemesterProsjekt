@@ -11,7 +11,7 @@ using Route.DataBaseLayre.Models;
 
 namespace Route.Test.IntergrationTest
 {
-    class RouteControllerTest : RouteSystemContainer
+    public class RouteControllerTest : RouteSystemContainer
     {
         public void CreateRoute()
         {
@@ -21,6 +21,7 @@ namespace Route.Test.IntergrationTest
             //Act
             
             //Assert
+            
         }
         // [Theory]
         // [MethodImpl( MethodImplOptions.NoInlining)]
@@ -97,7 +98,7 @@ namespace Route.Test.IntergrationTest
             customer.Locations.Add(customerLocation);
             yield return new []
             {
-                route 
+                route
             };
         }
     }

@@ -6,7 +6,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using Fleet.DataBaseLayre.Interfaces;
 using Fleet.DataBaseLayre.Models;
+using DatabaseLayerCore.MessageBus.Models;
 using InterfacesLib;
+using MassTransit;
+using ServiceStack.Messaging;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -18,11 +21,12 @@ namespace Fleet.Controllers
 	{
 		private readonly IRepository<Vehicle, int> _repository;
 		private readonly IFleetRepository _fleetRepository;
-
-		public VehicleController(IRepository<Vehicle,int> repository, IFleetRepository fleetRepository)
+		private readonly IBus _messageBus;
+		public VehicleController(IRepository<Vehicle,int> repository, IFleetRepository fleetRepository, IBus messageBus)
 		{
 			_fleetRepository = fleetRepository;
 			_repository = repository;
+			_messageBus = messageBus;
 		}
 
 
@@ -60,7 +64,8 @@ namespace Fleet.Controllers
 		{
 			var id = await _repository.UpsertAsync(value, cancellationToken);
 			var vehicle = await _repository.GetAsync(id, cancellationToken);
-
+			
+			await _messageBus.Publish(new UpdateMessage<Vehicle>{ Message = vehicle });
 			return vehicle is not null 
 				? Ok(vehicle) 
 				: StatusCode(500);
@@ -73,6 +78,7 @@ namespace Fleet.Controllers
 			value.Id = id;
 			var updatedId = await _repository.UpdateAsync(value, cancellationToken);
 			var vehicle = await _repository.GetAsync(updatedId, cancellationToken);
+			await _messageBus.Publish(new UpdateMessage<Vehicle>{ Message = vehicle });
 
 			return vehicle is not null
 				? Ok(vehicle)
@@ -84,6 +90,7 @@ namespace Fleet.Controllers
 		public async Task<ActionResult> Delete(int id, CancellationToken cancellationToken = new())
 		{
 			await _repository.DeleteAsync(id, cancellationToken);
+			await _messageBus.Publish(new DeleateMessage<Vehicle>{ Message = new Vehicle{ Id = id } });
 			return Ok();
 		}
 	}

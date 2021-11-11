@@ -11,6 +11,10 @@ namespace Route.Controllers
     [Route("[controller]")]
     public class RouteController : ControllerBase
     {
+        public RouteController()
+        {
+            
+        }
         
     }
 }
