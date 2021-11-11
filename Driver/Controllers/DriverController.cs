@@ -26,7 +26,7 @@ namespace Driver.Controllers
 
         // GET: api/<DriverController>
         [HttpGet("ContactType")]
-		public async Task<IEnumerable<DriverModel>> GetByMake([FromQuery] string contactType, CancellationToken cancellationToken = new())
+		public async Task<IEnumerable<DriverModel>> GetByContactType([FromQuery] string contactType, CancellationToken cancellationToken = new())
 		{
 			IEnumerable<DriverModel> value = await _driverRepository.GetByContactType(contactType, cancellationToken);
 			return value;
