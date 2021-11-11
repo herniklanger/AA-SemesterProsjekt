@@ -11,7 +11,7 @@ using ServiceStack.OrmLite;
 
 namespace DriverTest
 {
-    internal class DriverSystemContainer
+    public class DriverSystemContainer
     {
         protected readonly WebApplicationFactory<Startup> app;
         protected readonly HttpClient TestClient;

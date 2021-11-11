@@ -57,11 +57,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Route.Test", "Route.Test\Ro
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatabaseLayerCore", "DatabaseLayerCore\DatabaseLayerCore.csproj", "{8B8F5821-87EF-49C7-B2E0-3DE94103CC0F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Driver.DatabaseLayer", "Driver.DatabaseLayer\Driver.DatabaseLayer.csproj", "{8507802E-DFB4-48A7-9923-81353495B43C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Driver.DatabaseLayer", "Driver.DatabaseLayer\Driver.DatabaseLayer.csproj", "{8507802E-DFB4-48A7-9923-81353495B43C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Driver", "Driver\Driver.csproj", "{5FC08D4B-376B-469B-ACD7-F4F67229C866}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Driver", "Driver\Driver.csproj", "{5FC08D4B-376B-469B-ACD7-F4F67229C866}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DriverTest", "DriverTest\DriverTest.csproj", "{089F5FCD-E13E-4F39-BB84-4DD2ADADB700}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DriverTest", "DriverTest\DriverTest.csproj", "{089F5FCD-E13E-4F39-BB84-4DD2ADADB700}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
