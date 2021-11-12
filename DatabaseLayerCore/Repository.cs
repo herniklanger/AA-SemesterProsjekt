@@ -28,7 +28,8 @@ namespace DatabaseLayerCore
 
         public virtual async Task<TEntity?> GetAsync(int id, CancellationToken token = default)
         {
-            return (await Connection.SelectAsync<TEntity>(entity => entity.Id.Equals(id), token: token)).FirstOrDefault();
+            TEntity result = (await Connection.LoadSingleByIdAsync<TEntity>(id, token: token));
+            return result;
         }
 
         public virtual async Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken token = default)
@@ -44,7 +45,8 @@ namespace DatabaseLayerCore
 
         public virtual async Task<int> DeleteAsync(int id, CancellationToken token = default)
         {
-            return await Connection.DeleteAsync<TEntity>(id, token: token);
+            var result =await Connection.DeleteByIdAsync<TEntity>(id, token: token);
+            return result;
         }
 
         public virtual async Task<int> DeleteAsync(TEntity entity, CancellationToken token = default)

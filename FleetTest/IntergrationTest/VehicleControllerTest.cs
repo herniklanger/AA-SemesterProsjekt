@@ -12,6 +12,7 @@ using InterfacesLib;
 using Fleet.DataBaseLayre;
 using Fleet.DataBaseLayre.Interfaces;
 using MassTransit;
+using MassTransit.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using ServiceStack.Data;
 using ServiceStack.OrmLite;
@@ -25,10 +26,6 @@ namespace FleetTest.IntergrationTest
 		public async Task GetAll_Vehicles()
 		{
 			//Arrange
-			using (var service = app.Server.Services.CreateScope())
-			{
-				service.ServiceProvider.GetService<IBus>(); 
-			}
 			//Act
 			HttpResponseMessage response = await TestClient.GetAsync("api/Vehicle");
 			

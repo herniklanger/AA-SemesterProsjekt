@@ -46,6 +46,7 @@ namespace FleetTest
                     });
                 });
             TestClient = app.CreateClient();
+            app.Server.Services.GetService<InMemoryTestHarness>().Start().Wait();
         }
     }
 }
