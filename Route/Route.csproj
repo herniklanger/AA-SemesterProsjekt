@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Route.BusinesseLayre\Route.BusinesseLayre.csproj" />
     <ProjectReference Include="..\Route.DataBaseLayre\Route.DataBaseLayre.csproj" />
   </ItemGroup>
 

@@ -43,11 +43,9 @@ namespace Route.Test.IntergrationTest
                 List<DataBaseLayre.Models.Route> result =
                     JsonConvert.DeserializeObject<List<DataBaseLayre.Models.Route>>(resultText);
                 IEnumerable<DataBaseLayre.Models.Route> ExpedetRoutes = await context.GetAllAsync();
-                //TODO Find a beddere way
                 foreach (DataBaseLayre.Models.Route ExpedetRoute in ExpedetRoutes)
                 {
-                    result.Find(x => x.Id == ExpedetRoute.Id).Should()
-                        .BeEquivalentTo(ExpedetRoute, x => x.ExcludingNestedObjects());
+                    result.Should().ContainEquivalentOf(ExpedetRoute, x => x.ExcludingNestedObjects());
                 }
             }
 
