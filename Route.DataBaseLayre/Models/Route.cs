@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 using InterfacesLib;
 using ServiceStack.DataAnnotations;
 
@@ -14,7 +15,11 @@ namespace Route.DataBaseLayre.Models
         public Location EndCheckpoint { get; set; }
         [Reference]
         public Vehicle Vehicle { get; set; }
+        [JsonIgnore]
         public int VehicleId { get; set; }
+        [IgnoreDataMember]
+        public List<Checkpoint> Checkpoint { get; set; }
+        [JsonIgnore]
         [Reference]
         public List<RouteLocations> RouteLocationsList { get; set; }
         

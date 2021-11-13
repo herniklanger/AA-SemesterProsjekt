@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Runtime.Serialization;
 using InterfacesLib;
 using ServiceStack.DataAnnotations;
 
@@ -8,7 +9,8 @@ namespace Route.DataBaseLayre.Models
     {
         public int Id { get; set; }
         public Location Location { get; set; }
-        
+        [IgnoreDataMember]
+        public  List<Route> Routes { get; set; }
         [Reference]
         public List<RouteLocations> RouteLocations { get; set; }
         [Reference]

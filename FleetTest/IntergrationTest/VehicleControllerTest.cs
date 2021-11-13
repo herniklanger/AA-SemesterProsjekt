@@ -39,7 +39,7 @@ namespace FleetTest.IntergrationTest
 
 
 		[Theory]
-		[MemberData(nameof(CreateAndGet_VehicleData))]
+		[MemberData(nameof(VehicleTestObject))]
 		public async Task Create_Vehicles(Vehicle vehicle)
 		{
 			
@@ -65,7 +65,7 @@ namespace FleetTest.IntergrationTest
 
 
 		[Theory]
-		[MemberData(nameof(CreateAndGet_VehicleData))]
+		[MemberData(nameof(VehicleTestObject))]
 		public async Task Get_Vehicle_By_Id(Vehicle vehicle)
 		{
 			//Arrange
@@ -90,7 +90,7 @@ namespace FleetTest.IntergrationTest
 			Assert.Equal(ExpedetText.ToLower(), resultText.ToLower());
 		}
 		[Theory]
-		[MemberData(nameof(CreateAndGet_VehicleData))]
+		[MemberData(nameof(VehicleTestObject))]
 		public async Task Get_Vehicle_By_MakeName(Vehicle vehicle)
 		{
 			//Arrange
@@ -120,7 +120,7 @@ namespace FleetTest.IntergrationTest
 			Assert.Equal(ExpedetText.ToLower(), resultText.ToLower());
 		}
 		[Theory]
-		[MemberData(nameof(CreateAndGet_VehicleData))]
+		[MemberData(nameof(VehicleTestObject))]
 		public async Task Delete_Vehicle_By_Id(Vehicle vehicle)
 		{
 			//Arrange
@@ -128,7 +128,6 @@ namespace FleetTest.IntergrationTest
 			using (var scope = app.Services.CreateScope())
 			{
 				var services = scope.ServiceProvider;
-				services.GetService(typeof(IFleetRepository));
 				
 				IDbConnection db = (services.GetService(typeof(IDbConnectionFactory)) as IDbConnectionFactory).OpenDbConnection();
 				await db.SaveAsync(vehicle, true);//Add 1 vehicle
@@ -148,7 +147,7 @@ namespace FleetTest.IntergrationTest
 			}
 		}
 
-		public static IEnumerable<object[]> CreateAndGet_VehicleData()
+		public static IEnumerable<object[]> VehicleTestObject()
         {
 			DateTime dateTime = DateTime.Now;
 			yield return new object[] {
