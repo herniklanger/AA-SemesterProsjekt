@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace InterfacesLib.Driver
+﻿namespace InterfacesLib.Driver
 {
-    public interface IDriverModel
+    public interface IDriverModel : IEntity<int>
     {
         public int Id { get; set; }
         public string Name { get; set; }

@@ -6,7 +6,7 @@ using ServiceStack.DataAnnotations;
 
 namespace Fleet.DataBaseLayre.Models
 {
-	public record Vehicle : IVehicle<VehicleType, Make, Model>, IEntity<int>
+	public class Vehicle : IVehicle<VehicleType, Make, Model>, IEntity<int>
 	{
 		[AutoIncrement]
 		public int Id { get; set; }
