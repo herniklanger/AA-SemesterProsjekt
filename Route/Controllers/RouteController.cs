@@ -18,7 +18,7 @@ namespace Route.Controllers
         private readonly RouteCalculatore _routeController = new ();
         public RouteController(IRepository<DataBaseLayre.Models.Route, int> repository)
         {
-            
+            _repository = repository;
         }
         
         [HttpGet]

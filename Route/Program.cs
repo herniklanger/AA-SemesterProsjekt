@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MassTransit;
 
 namespace Route
 {
@@ -13,7 +14,22 @@ namespace Route
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            CreateHostBuilder(args).ConfigureServices(services => 
+            {
+                services.AddMassTransit(x =>
+                {
+                    x.UsingRabbitMq((context, cfg) =>
+                    {
+                        cfg.ConfigureEndpoints(context);
+                        cfg.Host("rabbitmq://localhost", h =>
+                        {
+                            // h.Username("aasemterprosjekt");
+                            // h.Password("Jj2E8-?GYtyq");
+                        });
+                    });
+                });
+                services.AddMassTransitHostedService();
+            }).Build().Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
