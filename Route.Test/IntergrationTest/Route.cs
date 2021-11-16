@@ -35,13 +35,14 @@ namespace Route.Test.IntergrationTest
                     services.GetRequiredService<IRepository<DataBaseLayre.Models.Route, int>>();
                 InputRoute.Id = await context.CreateAsync(InputRoute);
                 //Act
-                HttpResponseMessage response = await TestClient.GetAsync("/api/Route/");
+                HttpResponseMessage response = await TestClient.GetAsync("/api/Route");
 
                 //Assert
-                response.IsSuccessStatusCode.Should().BeTrue();
+                string responseString = await response.Content.ReadAsStringAsync();
+                response.IsSuccessStatusCode.Should().BeTrue(responseString);
 
                 string resultText = await response.Content.ReadAsStringAsync();
-                resultText.Should().NotBeNullOrEmpty();
+                resultText.Should().NotBeNullOrEmpty(resultText);
 
 
                 List<DataBaseLayre.Models.Route> result =
@@ -72,11 +73,12 @@ namespace Route.Test.IntergrationTest
             }
 
             //Act client
-            HttpResponseMessage response = await TestClient.GetAsync("/api/Route?Id=InputRoute.Id");
+            HttpResponseMessage response = await TestClient.GetAsync($"/api/Route/{InputRoute.Id}");
 
             //Assert
-            response.IsSuccessStatusCode.Should().BeTrue();
-
+            string responseString = await response.Content.ReadAsStringAsync();
+            response.IsSuccessStatusCode.Should().BeTrue(responseString);
+            
             string resultText = await response.Content.ReadAsStringAsync();
             resultText.Should().NotBeNullOrEmpty();
 
@@ -117,7 +119,7 @@ namespace Route.Test.IntergrationTest
 
                 routeDbStoreage.Should().BeEquivalentTo(InputRoute, x =>
                 {
-                    x.Excluding(y => y.Checkpoint);
+                    x.Excluding(y => y.Checkpoint); 
                     x.Excluding(y => y.VehicleId);
                     x.Excluding(y => y.RouteLocationsList);
                     return x;
