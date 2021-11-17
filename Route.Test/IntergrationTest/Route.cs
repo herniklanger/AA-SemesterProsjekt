@@ -4,15 +4,19 @@ using System.Data;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Threading.Tasks;
 using FluentAssertions;
 using InterfacesLib;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
+using Route.DataBaseLayre;
 using Xunit;
 using Route.DataBaseLayre.Models;
+using ServiceStack;
 using ServiceStack.Data;
 using ServiceStack.OrmLite;
 using ServiceStack.OrmLite.Dapper;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Route.Test.IntergrationTest
 {
@@ -31,13 +35,14 @@ namespace Route.Test.IntergrationTest
                     services.GetRequiredService<IRepository<DataBaseLayre.Models.Route, int>>();
                 InputRoute.Id = await context.CreateAsync(InputRoute);
                 //Act
-                HttpResponseMessage response = await TestClient.GetAsync("/api/Route/");
+                HttpResponseMessage response = await TestClient.GetAsync("/api/Route");
 
                 //Assert
-                response.IsSuccessStatusCode.Should().BeTrue();
+                string responseString = await response.Content.ReadAsStringAsync();
+                response.IsSuccessStatusCode.Should().BeTrue(responseString);
 
                 string resultText = await response.Content.ReadAsStringAsync();
-                resultText.Should().NotBeNullOrEmpty();
+                resultText.Should().NotBeNullOrEmpty(resultText);
 
 
                 List<DataBaseLayre.Models.Route> result =
@@ -56,6 +61,7 @@ namespace Route.Test.IntergrationTest
         [MemberData(nameof(CreateTestRoutes))]
         public async void GetById_Route(DataBaseLayre.Models.Route InputRoute)
         {
+            InputRoute.StartCheckpointX = 213.23M;
             //Arrange
             using (var scope = app.Services.CreateScope())
             {
@@ -67,11 +73,12 @@ namespace Route.Test.IntergrationTest
             }
 
             //Act client
-            HttpResponseMessage response = await TestClient.GetAsync("/api/Route?Id=InputRoute.Id");
+            HttpResponseMessage response = await TestClient.GetAsync($"/api/Route/{InputRoute.Id}");
 
             //Assert
-            response.IsSuccessStatusCode.Should().BeTrue();
-
+            string responseString = await response.Content.ReadAsStringAsync();
+            response.IsSuccessStatusCode.Should().BeTrue(responseString);
+            
             string resultText = await response.Content.ReadAsStringAsync();
             resultText.Should().NotBeNullOrEmpty();
 
@@ -86,29 +93,37 @@ namespace Route.Test.IntergrationTest
         public async void Create_Route(DataBaseLayre.Models.Route InputRoute)
         {
             //Arrange
-
-            //Act
-            HttpResponseMessage response = await TestClient.PostAsJsonAsync("/api/Route/", InputRoute);
-
-            //Assert
-            string resoultText = await response.Content.ReadAsStringAsync();
-            resoultText.Should().NotBeNullOrEmpty();
-
-            DataBaseLayre.Models.Route resoultObject =
-                JsonConvert.DeserializeObject<DataBaseLayre.Models.Route>(resoultText);
             using (var scope = app.Services.CreateScope())
             {
+                scope.ServiceProvider.GetService<RouteRepository>();
                 IDbConnection db = scope.ServiceProvider.GetService<IDbConnectionFactory>().OpenDbConnection();
+
+                await db.SaveAllAsync(InputRoute.Checkpoint.ConvertAll<Customer>(x => x.Customers));
+                await db.SaveAllAsync(InputRoute.Checkpoint);
+                await db.SaveAsync(InputRoute.Vehicle);
+                //Act
+                HttpResponseMessage response = await TestClient.PostAsJsonAsync("/api/Route/", InputRoute);
+
+                //Assert
+                response.IsSuccessStatusCode.Should().BeTrue(response.Content.ReadAsStringAsync().Result);
+                
+                string resoultText = await response.Content.ReadAsStringAsync();
+                resoultText.Should().NotBeNullOrEmpty();
+
+                DataBaseLayre.Models.Route resoultObject =
+                    JsonConvert.DeserializeObject<DataBaseLayre.Models.Route>(resoultText);
+            
                 DataBaseLayre.Models.Route routeDbStoreage =
                     await db.LoadSingleByIdAsync<DataBaseLayre.Models.Route>(resoultObject.Id);
-                routeDbStoreage.Checkpoint = new List<Checkpoint>();
-                foreach (RouteLocations routeLocations in routeDbStoreage.RouteLocationsList)
-                {
-                    routeDbStoreage.Checkpoint.Add(
-                        await db.LoadSingleByIdAsync<Checkpoint>(routeLocations.CheckpointId));
-                }
+                
 
-                routeDbStoreage.Should().BeSameAs(InputRoute);
+                routeDbStoreage.Should().BeEquivalentTo(InputRoute, x =>
+                {
+                    x.Excluding(y => y.Checkpoint); 
+                    x.Excluding(y => y.VehicleId);
+                    x.Excluding(y => y.RouteLocationsList);
+                    return x;
+                });
             }
 
         }

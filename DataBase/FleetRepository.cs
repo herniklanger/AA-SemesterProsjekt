@@ -41,10 +41,7 @@ namespace Fleet.DataBaseLayre
 
 		public override async Task<IEnumerable<Vehicle>> GetAllAsync(CancellationToken token = default)
 		{
-			var q = Connection.From<Vehicle>()
-				.Join<Make>()
-				.Join<Model>()
-				.Join<VehicleType>();
+			var q = Connection.From<Vehicle>();
 			return await Connection.SelectAsync(q, token);
 		}
 

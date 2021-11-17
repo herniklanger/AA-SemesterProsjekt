@@ -18,7 +18,7 @@ namespace Route.Controllers
         private readonly RouteCalculatore _routeController = new ();
         public RouteController(IRepository<DataBaseLayre.Models.Route, int> repository)
         {
-            
+            _repository = repository;
         }
         
         [HttpGet]
@@ -26,8 +26,8 @@ namespace Route.Controllers
         {
             return await _repository.GetAllAsync();
         }
-        [HttpGet]
-        public async Task<DataBaseLayre.Models.Route> Get(int Id)
+        [HttpGet("{id}")]
+        public async Task<DataBaseLayre.Models.Route> Get([FromQuery] int Id)
         {
             DataBaseLayre.Models.Route route = await _repository.GetAsync(Id);
             

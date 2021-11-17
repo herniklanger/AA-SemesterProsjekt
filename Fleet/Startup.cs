@@ -14,7 +14,6 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Data.SQLite;
 using Fleet.DataBaseLayre.Interfaces;
-using Fleet.DataBaseLayre.Models.MessageBus;
 using MassTransit;
 using MassTransit.Testing;
 using ServiceStack.Messaging;

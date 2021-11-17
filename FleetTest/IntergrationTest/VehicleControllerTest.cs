@@ -128,12 +128,12 @@ namespace FleetTest.IntergrationTest
 			using (var scope = app.Services.CreateScope())
 			{
 				var services = scope.ServiceProvider;
-				
-				IDbConnection db = (services.GetService(typeof(IDbConnectionFactory)) as IDbConnectionFactory).OpenDbConnection();
-				await db.SaveAsync(vehicle, true);//Add 1 vehicle
+				services.GetService<FleetRepository>();
+				IDbConnection db = services.GetService<IDbConnectionFactory>().OpenDbConnection();
+				await db.SaveAsync(vehicle);//Add 1 vehicle
 				int deleateId = vehicle.Id;
 				vehicle.Id = 0;
-				await db.SaveAsync(vehicle, true);//Add 2 vegicle
+				await db.SaveAsync(vehicle);//Add 2 vegicle
 				int Before = db.Query<int>("SELECT COUNT(*) FROM Vehicle").FirstOrDefault();
 				
 				//Act

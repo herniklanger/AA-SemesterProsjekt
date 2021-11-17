@@ -1,7 +1,8 @@
 using System.Threading.Tasks;
+using Fleet.DataBaseLayre.Models;
 using MassTransit;
 
-namespace Fleet.DataBaseLayre.Models.MessageBus
+namespace Fleet.MassTransit
 {
     public class MessagesConsumer:IConsumer<Vehicle>
     {
