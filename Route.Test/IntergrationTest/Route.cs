@@ -134,6 +134,7 @@ namespace Route.Test.IntergrationTest
 
                 routeDbStoreage.Should().BeEquivalentTo(InputRoute, x =>
                 {
+                    x.Excluding(y => y.Id);
                     x.Excluding(y => y.Checkpoint); 
                     x.Excluding(y => y.VehicleId);
                     x.Excluding(y => y.RouteLocationsList);

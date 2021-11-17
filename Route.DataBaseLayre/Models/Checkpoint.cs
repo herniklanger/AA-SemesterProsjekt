@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Runtime.Serialization;
-using System.Text.Json.Serialization;
 using InterfacesLib;
+using Newtonsoft.Json;
 using ServiceStack.DataAnnotations;
 
 namespace Route.DataBaseLayre.Models
