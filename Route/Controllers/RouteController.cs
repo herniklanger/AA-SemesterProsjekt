@@ -5,8 +5,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using InterfacesLib;
+using Newtonsoft.Json;
 using Route.BusinesseLayre;
 using ServiceStack;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Route.Controllers
 {
@@ -27,8 +29,9 @@ namespace Route.Controllers
             return await _repository.GetAllAsync();
         }
         [HttpGet("{id}")]
-        public async Task<DataBaseLayre.Models.Route> Get([FromQuery] int Id)
+        public async Task<DataBaseLayre.Models.Route> Get(int Id)
         {
+            
             DataBaseLayre.Models.Route route = await _repository.GetAsync(Id);
             
             return route;

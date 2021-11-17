@@ -8,6 +8,7 @@ namespace Route.DataBaseLayre.Models
     /// </summary>
     public class RouteLocations : IEntity<int>
     {
+        [AutoIncrement]
         public int Id { get; set; }
         [IgnoreAttribute]
         public Route Route { get; set; }

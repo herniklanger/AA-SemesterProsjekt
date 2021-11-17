@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ using InterfacesLib;
 using Route.DataBaseLayre.Models;
 using ServiceStack.Data;
 using ServiceStack.OrmLite;
+using ServiceStack.OrmLite.Dapper;
 
 namespace Route.DataBaseLayre
 {
@@ -20,7 +22,7 @@ namespace Route.DataBaseLayre
                 Connection.DropAndCreateTable<Vehicle>();
                 Connection.DropAndCreateTable<RouteLocations>();
                 Connection.DropAndCreateTable<Checkpoint>();
-                Connection.CreateTable<Models.Route>();
+                Connection.DropAndCreateTable<Models.Route>();
             }
         }
 
@@ -40,6 +42,23 @@ namespace Route.DataBaseLayre
             await Connection.SaveAsync(entity, true, token: cancellationToken);
 
             return entity.Id;
+        }
+
+        public override async Task<Models.Route?> GetAsync(int id, CancellationToken token = default)
+        {
+            var q = Connection.QueryMultipleAsync(
+        "select \"Checkpoint\".Id, \"Checkpoint\".CustomersId, \"Checkpoint\".LocationX, \"Checkpoint\".LocationY " +
+            "FROM \"Checkpoint\" " +
+            "JOIN RouteLocations on \"Checkpoint\".Id = RouteLocations.CheckpointId " +
+            $"where RouteLocations.RouteId= {id};");
+            
+            Models.Route route = await base.GetAsync(id, token);
+            route.Checkpoint = (await q).Read<Checkpoint>().ToList();
+            foreach (var checkpoint in route.Checkpoint)
+            {
+                checkpoint.Customers = await Connection.SingleByIdAsync<Customer>(checkpoint.CustomersId);
+            }
+            return route;
         }
     }
 }

@@ -8,6 +8,7 @@ namespace Route.DataBaseLayre.Models
 {
     public class Checkpoint : IEntity<int>
     {
+        [AutoIncrement]
         public int Id { get; set; }
         [Ignore]
         public Location Location { get; set; }
@@ -43,6 +44,7 @@ namespace Route.DataBaseLayre.Models
         [Ignore]
         public  List<Route> Routes { get; set; }
         [Reference]
+        [JsonIgnore]
         public List<RouteLocations> RouteLocations { get; set; }
         [Reference]
         public Customer Customers { get; set; }

@@ -14,6 +14,7 @@ using Xunit;
 using Route.DataBaseLayre.Models;
 using ServiceStack;
 using ServiceStack.Data;
+using ServiceStack.DataAnnotations;
 using ServiceStack.OrmLite;
 using ServiceStack.OrmLite.Dapper;
 using JsonSerializer = System.Text.Json.JsonSerializer;
@@ -69,6 +70,14 @@ namespace Route.Test.IntergrationTest
                 IServiceProvider services = scope.ServiceProvider;
                 IRepository<DataBaseLayre.Models.Route, int> context =
                     services.GetRequiredService<IRepository<DataBaseLayre.Models.Route, int>>();
+                IDbConnection db = scope.ServiceProvider.GetService<IDbConnectionFactory>().OpenDbConnection();
+
+                await db.SaveAllAsync(InputRoute.Checkpoint.ConvertAll<Customer>(x => x.Customers));
+                await db.SaveAllAsync(InputRoute.Checkpoint);
+                await db.SaveAsync(InputRoute.Vehicle);
+                InputRoute.RouteLocationsList = new List<RouteLocations>();
+                InputRoute.RouteLocationsList = InputRoute.Checkpoint.ConvertAll(x => new RouteLocations()
+                    { Checkpoint = x });
                 InputRoute.Id = await context.CreateAsync(InputRoute);
             }
 
@@ -84,7 +93,13 @@ namespace Route.Test.IntergrationTest
 
 
             DataBaseLayre.Models.Route result = JsonConvert.DeserializeObject<DataBaseLayre.Models.Route>(resultText);
-            result.Should().BeEquivalentTo(InputRoute, x => x.Excluding(y => y.RouteLocationsList).Excluding(y=>y.VehicleId));
+            result.Should().BeEquivalentTo(InputRoute, x =>
+            {
+                x.Excluding(y => y.RouteLocationsList).Excluding(y => y.VehicleId)
+                    .Excluding(y => y.RouteLocationsList)
+                    .Excluding(y => y.Checkpoint);
+                return x;
+            });
         }
 
 
@@ -157,7 +172,6 @@ namespace Route.Test.IntergrationTest
 
                 routeDbStoreage.Should().BeSameAs(InputRoute);
             }
-
         }
 
         [Theory]
