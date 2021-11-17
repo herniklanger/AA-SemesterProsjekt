@@ -16,12 +16,14 @@ namespace Driver.DatabaseLayer
     {
 		public DriverRepository(IDbConnectionFactory connection) : base(connection)
 		{
-			if (!Connection.TableExists<DriverModel>())
-			{
-				Connection.DropAndCreateTable<Contact>();
-				Connection.CreateTable<DriverModel>();
-			}
-		}
+            if (!Connection.TableExists<DriverModel>())
+            {
+                Connection.DropAndCreateTable<Contact>();
+
+                Connection.CreateTable<DriverModel>();
+            }
+            //Connection.DropAndCreateTable<DriverModel>();
+        }
 
 		public override async Task<IEnumerable<DriverModel>> GetAllAsync(CancellationToken token = default)
 		{

@@ -9,17 +9,16 @@ using ServiceStack.DataAnnotations;
 
 namespace Driver.DatabaseLayer.Models
 {
-    public class Contact : IContact<DriverModel>, IEntity<int>
+    public class Contact : IContact, IEntity<int>
 	{
 		[AutoIncrement]
 		public int Id { get; set; }
-
-		[Reference]
-		public DriverModel DriverId { get; set; }
 		public string PhoneNumber { get; set; }
 		public string ContactType { get; set; }
+		[Reference]
+        public DriverModel drivers { get; set; }
 
-	}
+    }
 
 
 }
