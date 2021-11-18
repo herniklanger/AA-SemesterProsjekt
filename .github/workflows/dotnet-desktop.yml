@@ -36,7 +36,7 @@ jobs:
           
       - name: Build Image
         run: |
-          docker build -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest -f MyApi/Dockerfile .
+          docker build -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest -f Dockerfile .
       - name: Push Image
         if: github.event_name != 'pull_request'
         run: |
