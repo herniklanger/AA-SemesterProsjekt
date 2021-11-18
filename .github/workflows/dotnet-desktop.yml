@@ -41,8 +41,8 @@ jobs:
           
       - name: Build Image
         run: |
-          docker build -t ${{ env.REGISTRY.lowercase }}/${{ env.IMAGE_NAME }}:latest -f Dockerfile .
+          docker build -t ${{ env.REGISTRY.toLowerCase() }}/${{ env.IMAGE_NAME }}:latest -f Dockerfile .
       - name: Push Image
         if: github.event_name != 'pull_request'
         run: |
-          docker push ${{ env.REGISTRY.lowercase }}/${{ env.IMAGE_NAME }}:latest
+          docker push ${{ env.REGISTRY.toLowerCase() }}/${{ env.IMAGE_NAME }}:latest
