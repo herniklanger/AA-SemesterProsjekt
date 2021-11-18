@@ -186,13 +186,20 @@ namespace Route.Test.IntergrationTest
                 IDbConnection db = services.GetService<IDbConnectionFactory>().OpenDbConnection();
                 IRepository<DataBaseLayre.Models.Route, int> context =
                     services.GetRequiredService<IRepository<DataBaseLayre.Models.Route, int>>();
-                int Before = db.Query<int>("SELECT COUNT(*) FROM Vehicle").FirstOrDefault();
+                await db.SaveAllAsync(InputRoute.Checkpoint.ConvertAll<Customer>(x => x.Customers));
+                await db.SaveAllAsync(InputRoute.Checkpoint);
+                await db.SaveAsync(InputRoute.Vehicle);
+                await db.SaveAsync(InputRoute);
+
+                
+                int Before = db.Query<int>("SELECT COUNT(*) FROM Route").FirstOrDefault();
 
                 //Act
-                HttpResponseMessage response = await TestClient.GetAsync("/api/Route/");
+                HttpResponseMessage response = await TestClient.DeleteAsync($"/api/Route?Id={InputRoute.Id}");
 
                 //Assert
-                int Afer = db.Query<int>("SELECT COUNT(*) FROM Vehicle").FirstOrDefault();
+                response.IsSuccessStatusCode.Should().BeTrue(response.Content.ReadAsStringAsync().Result);
+                int Afer = db.Query<int>("SELECT COUNT(*) FROM Route").FirstOrDefault();
                 Afer.Should().Be(Before - 1);
             }
         }
