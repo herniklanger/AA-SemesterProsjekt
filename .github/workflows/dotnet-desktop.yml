@@ -8,7 +8,7 @@ on:
 
 env:
   REGISTRY: ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name}}
-  IMAGE_NAME: myapi
+  IMAGE_NAME: Fleet
 
 
 jobs:
