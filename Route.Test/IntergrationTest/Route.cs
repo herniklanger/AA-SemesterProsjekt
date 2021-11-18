@@ -51,7 +51,9 @@ namespace Route.Test.IntergrationTest
                 IEnumerable<DataBaseLayre.Models.Route> ExpedetRoutes = await context.GetAllAsync();
                 foreach (DataBaseLayre.Models.Route ExpedetRoute in ExpedetRoutes)
                 {
-                    result.Should().ContainEquivalentOf(ExpedetRoute, x => x.ExcludingNestedObjects());
+                    result.Should().ContainEquivalentOf(ExpedetRoute, x => 
+                        x.ExcludingNestedObjects()
+                            .Excluding(y=>y.VehicleId));
                 }
             }
 
@@ -116,6 +118,7 @@ namespace Route.Test.IntergrationTest
                 await db.SaveAllAsync(InputRoute.Checkpoint.ConvertAll<Customer>(x => x.Customers));
                 await db.SaveAllAsync(InputRoute.Checkpoint);
                 await db.SaveAsync(InputRoute.Vehicle);
+                
                 //Act
                 HttpResponseMessage response = await TestClient.PostAsJsonAsync("/api/Route/", InputRoute);
 
