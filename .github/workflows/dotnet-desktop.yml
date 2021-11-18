@@ -7,7 +7,7 @@ on:
     branches: [ main ]
 
 env:
-  REGISTRY: ghcr.io/tonur/aa-semesterprosjekt
+  REGISTRY: ghcr.io/${{ github.repository_owner.lowercase }}/${{ github.event.repository.name.lowercase }}
   IMAGE_NAME: fleet
 
 
@@ -23,6 +23,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
     
+      - name: Change String Case
+        uses: ASzc/change-string-case-action@v2
+
       - uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '6.0.x'
