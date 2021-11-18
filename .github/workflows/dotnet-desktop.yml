@@ -7,7 +7,7 @@ on:
     branches: [ main ]
 
 env:
-  REGISTRY: ghcr.io/${{ github.repository_owner }}.toLowerCase()/${{ github.event.repository.name }}.toLowerCase()
+  REGISTRY: ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}
   IMAGE_NAME: fleet
 
 
@@ -41,8 +41,8 @@ jobs:
           
       - name: Build Image
         run: |
-          docker build -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest -f Dockerfile .
+          docker build -t ${{ env.REGISTRY.lowercase }}/${{ env.IMAGE_NAME }}:latest -f Dockerfile .
       - name: Push Image
         if: github.event_name != 'pull_request'
         run: |
-          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+          docker push ${{ env.REGISTRY.lowercase }}/${{ env.IMAGE_NAME }}:latest
