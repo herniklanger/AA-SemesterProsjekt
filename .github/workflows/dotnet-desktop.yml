@@ -23,8 +23,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
     
-      - name: Change String Case
-        uses: ASzc/change-string-case-action@v2
+      - id: registry
+        uses: ASzc/change-string-case-action@v1
+        with:
+          string: ${{ env.REGISTRY }}
 
       - uses: actions/setup-dotnet@v1
         with:
@@ -41,8 +43,8 @@ jobs:
           
       - name: Build Image
         run: |
-          docker build -t ${{ env.REGISTRY.toLowerCase() }}/${{ env.IMAGE_NAME }}:latest -f Dockerfile .
+          docker build -t ${{ steps.registry.outputs.lowercase }}/${{ env.IMAGE_NAME }}:latest -f Dockerfile .
       - name: Push Image
         if: github.event_name != 'pull_request'
         run: |
-          docker push ${{ env.REGISTRY.toLowerCase() }}/${{ env.IMAGE_NAME }}:latest
+          docker push ${{ steps.registry.outputs.lowercase }}/${{ env.IMAGE_NAME }}:latest
