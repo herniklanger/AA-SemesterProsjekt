@@ -7,7 +7,7 @@ on:
     branches: [ main ]
 
 env:
-  REGISTRY: ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name}}
+  REGISTRY: ghcr.io/tonur/aa-semesterprosjekt
   IMAGE_NAME: fleet
 
 
