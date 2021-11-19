@@ -44,7 +44,7 @@ namespace Route.DataBaseLayre
             return entity.Id;
         }
 
-        public override async Task<Models.Route?> GetAsync(int id, CancellationToken token = default)
+        public override async Task<Models.Route> GetAsync(int id, CancellationToken token = default)
         {
             var q = Connection.QueryMultipleAsync(
         "Select \"Checkpoint\".Id, \"Checkpoint\".CustomerId, \"Checkpoint\".LocationX, \"Checkpoint\".LocationY " +
