@@ -18,6 +18,7 @@ using ServiceStack.DataAnnotations;
 using ServiceStack.OrmLite;
 using ServiceStack.OrmLite.Dapper;
 using JsonSerializer = System.Text.Json.JsonSerializer;
+using Route = Route.DataBaseLayre.Models.Route;
 
 namespace Route.Test.IntergrationTest
 {
@@ -149,32 +150,58 @@ namespace Route.Test.IntergrationTest
 
         [Theory]
         [MemberData(nameof(CreateTestRoutes))]
-        public async void Update_Route(DataBaseLayre.Models.Route InputRoute)
+        //Qusetion Wat is you update with out a full Checkpoint list
+        //Question What happens if Checkpoint dossent exit
+        //Question What happens if only the new data is pobuladet
+        public async void Update_Route(DataBaseLayre.Models.Route resoultRoute)
         {
             //Arrange
-
+            using (var scope = app.Services.CreateScope())
+            {
+                Checkpoint checkpoint = new Checkpoint(){Customers = resoultRoute.Checkpoint[0].Customers, Location = new Location(){X = 23.123M, Y = 20.213M}};
+                IServiceProvider services = scope.ServiceProvider;
+                IDbConnection db = services.GetService<IDbConnectionFactory>().OpenDbConnection();
+                IRepository<DataBaseLayre.Models.Route, int> context =
+                    services.GetRequiredService<IRepository<DataBaseLayre.Models.Route, int>>();
+                await db.SaveAllAsync(resoultRoute.Checkpoint.ConvertAll<Customer>(x => x.Customers));
+                await db.SaveAllAsync(resoultRoute.Checkpoint);
+                await db.SaveAsync(checkpoint);
+                await db.SaveAsync(resoultRoute.Vehicle);
+                await db.SaveAsync(resoultRoute);
+                resoultRoute.Checkpoint.Add(checkpoint);
+                DataBaseLayre.Models.Route Input = new DataBaseLayre.Models.Route()
+                    {Id = resoultRoute.Id, Checkpoint = resoultRoute.Checkpoint};
             //Act
-            HttpResponseMessage response = await TestClient.PostAsJsonAsync("/api/Route/", InputRoute);
+            HttpResponseMessage response = await TestClient.PostAsJsonAsync("/api/Route/", Input);
 
             //Assert
             string resoultText = await response.Content.ReadAsStringAsync();
+            response.IsSuccessStatusCode.Should().BeTrue(resoultText);
             resoultText.Should().NotBeNullOrEmpty();
+
 
             DataBaseLayre.Models.Route resoultObject =
                 JsonConvert.DeserializeObject<DataBaseLayre.Models.Route>(resoultText);
-            using (var scope = app.Services.CreateScope())
-            {
-                IDbConnection db = scope.ServiceProvider.GetService<IDbConnectionFactory>().OpenDbConnection();
+           
                 DataBaseLayre.Models.Route routeDbStoreage =
                     await db.LoadSingleByIdAsync<DataBaseLayre.Models.Route>(resoultObject.Id);
                 routeDbStoreage.Checkpoint = new List<Checkpoint>();
                 foreach (RouteLocations routeLocations in routeDbStoreage.RouteLocationsList)
                 {
-                    routeDbStoreage.Checkpoint.Add(
-                        await db.LoadSingleByIdAsync<Checkpoint>(routeLocations.CheckpointId));
+                    Checkpoint chek = await db.LoadSingleByIdAsync<Checkpoint>(routeLocations.CheckpointId);
+                    // Checkpoint chek = (await db.QuerySingleAsync<Checkpoint>(
+                    // "SELECT * From \"Checkpoint\" "+ 
+                    //     $" Where \"Checkpoint\".Id = {routeLocations.CheckpointId};"));
+                    // routeDbStoreage.Checkpoint.Add(chek);
+                    // chek.Customers=db.Select<Customer>(x => x.Id == chek.CustomerId).FirstOrDefault();
+                    routeLocations.Checkpoint = chek;
                 }
 
-                routeDbStoreage.Should().BeSameAs(InputRoute);
+                routeDbStoreage.Should().BeEquivalentTo(resoultRoute, x =>
+                {
+                    x.Excluding(y => y.RouteLocationsList);                    
+                    return x;
+                });
             }
         }
 

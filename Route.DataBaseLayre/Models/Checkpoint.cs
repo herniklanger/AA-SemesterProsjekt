@@ -47,6 +47,6 @@ namespace Route.DataBaseLayre.Models
         public List<RouteLocations> RouteLocations { get; set; }
         [Reference]
         public Customer Customers { get; set; }
-        public int CustomersId { get; set; }
+        public int CustomerId { get; set; }
     }
 }

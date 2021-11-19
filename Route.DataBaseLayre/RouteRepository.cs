@@ -47,16 +47,15 @@ namespace Route.DataBaseLayre
         public override async Task<Models.Route?> GetAsync(int id, CancellationToken token = default)
         {
             var q = Connection.QueryMultipleAsync(
-        "select \"Checkpoint\".Id, \"Checkpoint\".CustomersId, \"Checkpoint\".LocationX, \"Checkpoint\".LocationY " +
+        "Select \"Checkpoint\".Id, \"Checkpoint\".CustomerId, \"Checkpoint\".LocationX, \"Checkpoint\".LocationY " +
             "FROM \"Checkpoint\" " +
             "JOIN RouteLocations on \"Checkpoint\".Id = RouteLocations.CheckpointId " +
             $"where RouteLocations.RouteId= {id};");
-            
             Models.Route route = await base.GetAsync(id, token);
             route.Checkpoint = (await q).Read<Checkpoint>().ToList();
             foreach (var checkpoint in route.Checkpoint)
             {
-                checkpoint.Customers = await Connection.SingleByIdAsync<Customer>(checkpoint.CustomersId);
+                checkpoint.Customers = await Connection.SingleByIdAsync<Customer>(checkpoint.CustomerId);
             }
             return route;
         }
