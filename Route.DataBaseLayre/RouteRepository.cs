@@ -55,7 +55,7 @@ namespace Route.DataBaseLayre
             route.Checkpoint = (await q).Read<Checkpoint>().ToList();
             foreach (var checkpoint in route.Checkpoint)
             {
-                checkpoint.Customers = await Connection.SingleByIdAsync<Customer>(checkpoint.CustomerId);
+                checkpoint.Customer = await Connection.SingleByIdAsync<Customer>(checkpoint.CustomerId);
             }
             return route;
         }
