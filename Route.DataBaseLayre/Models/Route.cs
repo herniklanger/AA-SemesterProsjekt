@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
 using InterfacesLib;
+using InterfacesLib.Route;
 using Newtonsoft.Json;
 using ServiceStack.DataAnnotations;
 
 namespace Route.DataBaseLayre.Models
 {
-    public class Route : IEntity<int>, IRoute
+    public class Route : IEntity<int>, IRoute<Checkpoint, Vehicle, Customer,Route>
     {
         [AutoIncrement]
         public int Id { get; set; }

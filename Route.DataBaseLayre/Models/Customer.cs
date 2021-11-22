@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using InterfacesLib;
+using InterfacesLib.Route;
 using ServiceStack.DataAnnotations;
 
 namespace Route.DataBaseLayre.Models

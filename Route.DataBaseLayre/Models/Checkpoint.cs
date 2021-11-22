@@ -6,7 +6,7 @@ using ServiceStack.DataAnnotations;
 
 namespace Route.DataBaseLayre.Models
 {
-    public class Checkpoint : IEntity<int>, ICheckpoint
+    public class Checkpoint : IEntity<int>, ICheckpoint<Customer, Vehicle, Route, Checkpoint>
     {
         [AutoIncrement]
         public int Id { get; set; }

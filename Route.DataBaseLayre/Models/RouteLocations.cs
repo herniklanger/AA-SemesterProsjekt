@@ -1,12 +1,13 @@
 ﻿using InterfacesLib;
 using ServiceStack.DataAnnotations;
+using InterfacesLib.Route;
 
 namespace Route.DataBaseLayre.Models
 {
     /// <summary>
     /// Route Location List
     /// </summary>
-    public class RouteLocations : IEntity<int>, IRouteLocations
+    public class RouteLocations : IEntity<int>, IRouteLocations<Checkpoint, Vehicle, Customer, Route> 
     {
         [AutoIncrement]
         public int Id { get; set; }
