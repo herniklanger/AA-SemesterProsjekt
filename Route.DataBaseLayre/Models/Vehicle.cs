@@ -2,8 +2,8 @@
 
 namespace Route.DataBaseLayre.Models
 {
-    public class Vehicle : IEntity<int>
+    public class Vehicle : IEntity<int>, IVehicle
     {
-        public int Id {get; set;}
+        public int Id { get; set; }
     }
 }
