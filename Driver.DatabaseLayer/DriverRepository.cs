@@ -17,10 +17,10 @@ namespace Driver.DatabaseLayer
 		public DriverRepository(IDbConnectionFactory connection) : base(connection)
 		{
             if (!Connection.TableExists<DriverModel>())
-            {
-                Connection.DropAndCreateTable<Contact>();
+			{
+				Connection.DropAndCreateTable<DriverModel>();
+				Connection.DropAndCreateTable<Contact>();
 
-                Connection.CreateTable<DriverModel>();
             }
             //Connection.DropAndCreateTable<DriverModel>();
         }
@@ -43,5 +43,11 @@ namespace Driver.DatabaseLayer
 				.Join<Contact>();
 			return await Connection.QueryAsync<DriverModel>(query, new { contactType });
 		}
-	}
+
+        public async Task<IEnumerable<DriverModel>> GetByName(string contactType, CancellationToken cancellationToken = default)
+        {
+			var query = Connection.LoadSelect<DriverModel>(c => c.Name.Equals(contactType));
+			return query;
+        }
+    }
 }

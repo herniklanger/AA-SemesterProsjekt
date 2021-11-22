@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using InterfacesLib;
 using InterfacesLib.Driver;
+using Newtonsoft.Json;
 using ServiceStack.DataAnnotations;
 
 namespace Driver.DatabaseLayer.Models
@@ -15,9 +16,10 @@ namespace Driver.DatabaseLayer.Models
 		public int Id { get; set; }
 		public string PhoneNumber { get; set; }
 		public string ContactType { get; set; }
-		[Reference]
-        public DriverModel drivers { get; set; }
+        public int DriverModelId { get; set; }
 
+        [Ignore]
+        public DriverModel? drivers { get; set; }
     }
 
 

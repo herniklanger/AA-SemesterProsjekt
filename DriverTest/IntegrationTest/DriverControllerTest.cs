@@ -102,10 +102,6 @@ namespace DriverTest.IntegrationTest
 				int ObjectId = await db.UpsertAsync(driver);
 				Result[0].Id = ObjectId/*{ await db.GetAsync(ObjectId) }*/;
 			}
-			driver.Name = null;
-			driver.Role = null;
-			driver.Email = null;
-			driver.Surname = null;
 			//Act
 			HttpResponseMessage response = await TestClient.GetAsync($"api/driver/GetByName?name={name}");
 
@@ -133,7 +129,7 @@ namespace DriverTest.IntegrationTest
 				int deleateId = driver.Id;
 				driver.Id = 0;
 				await db.SaveAsync(driver, true);//Add 2 drivers
-				int Before = db.Query<int>("SELECT COUNT(*) FROM Driver").FirstOrDefault();
+				int Before = db.Query<int>("SELECT COUNT(*) FROM DriverModel").FirstOrDefault();
 
 				//Act
 				HttpResponseMessage response = await TestClient.DeleteAsync($"api/Driver/{deleateId}");
@@ -141,7 +137,7 @@ namespace DriverTest.IntegrationTest
 				//Assert
 				Assert.True(response.IsSuccessStatusCode, await response.Content.ReadAsStringAsync());
 
-				int Afer = db.Query<int>("SELECT COUNT(*) FROM Driver").FirstOrDefault();
+				int Afer = db.Query<int>("SELECT COUNT(*) FROM DriverModel").FirstOrDefault();
 				Assert.Equal(Before - 1, Afer);
 			}
 		}
@@ -154,8 +150,19 @@ namespace DriverTest.IntegrationTest
 				Name = "Jonny",
 				Surname = "Bravo",
 				Role = "driver",
-				Id = 1
+				Id = 0,
+				Contacts = new List<Contact>
+                {
+					new Contact
+                    {
+						Id = 0,
+						ContactType = "R",
+						DriverModelId = 0,
+						PhoneNumber = "+45 424242424"
+                    }
+                }
 			}
+			
 			};
 		}
 	}
