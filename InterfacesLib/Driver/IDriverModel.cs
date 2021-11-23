@@ -8,6 +8,6 @@ namespace InterfacesLib.Driver
         public string Surname { get; set; }
         public string Role { get; set; }
         public string Email { get; set; }
-        public List<TContact> contact { get; set; }
+        public List<TContact> Contacts { get; set; }
     }
 }

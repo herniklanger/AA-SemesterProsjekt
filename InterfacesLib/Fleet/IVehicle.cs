@@ -10,8 +10,8 @@ namespace InterfacesLib.Fleet
         string Vinnummer { get; set; }
         string Licenseplate { get; set; }
         string ModelType { get; set; }
-        DateTime RegisteringsDate { get; set; }
-        decimal DrivedKm { get; set; }
+        DateTime RegisterDate { get; set; }
+        decimal TotalKm { get; set; }
         TVehicleType VehicleType { get; set; }
         TMake Make { get; set; }        
         TModel Model { get; set; }

@@ -1,18 +1,19 @@
 ﻿using System.Collections.Generic;
 using InterfacesLib;
+using InterfacesLib.Route;
 using Newtonsoft.Json;
 using ServiceStack.DataAnnotations;
 
 namespace Route.DataBaseLayre.Models
 {
-    public class Checkpoint : IEntity<int>
+    public class Checkpoint : IEntity<int>, ICheckpoint<Customer, Vehicle, Route, Checkpoint>
     {
         [AutoIncrement]
         public int Id { get; set; }
         [Ignore]
         public Location Location { get; set; }
         [JsonIgnore]
-        public decimal LocationX 
+        public decimal LocationX
         {
             get
             {
@@ -23,7 +24,7 @@ namespace Route.DataBaseLayre.Models
                 var location = Location;
                 location.X = value;
                 Location = location;
-            } 
+            }
         }
 
         [JsonIgnore]
@@ -41,12 +42,12 @@ namespace Route.DataBaseLayre.Models
             }
         }
         [Ignore]
-        public  List<Route> Routes { get; set; }
+        public List<Route> Routes { get; set; }
         [Reference]
         [JsonIgnore]
         public List<RouteLocations> RouteLocations { get; set; }
         [Reference]
-        public Customer Customers { get; set; }
-        public int CustomersId { get; set; }
+        public Customer Customer { get; set; }
+        public int CustomerId { get; set; }
     }
 }

@@ -18,6 +18,6 @@ namespace Driver.DatabaseLayer.Models
         public string Role { get; set; }
         public string Email { get; set; }
         [Reference]
-        public List<Contact> contact { get; set ; }
+        public List<Contact> Contacts { get; set ; }
     }
 }

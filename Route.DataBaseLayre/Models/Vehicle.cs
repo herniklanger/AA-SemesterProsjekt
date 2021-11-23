@@ -1,9 +1,10 @@
 ﻿using InterfacesLib;
+using InterfacesLib.Route;
 
 namespace Route.DataBaseLayre.Models
 {
-    public class Vehicle : IEntity<int>
+    public class Vehicle : IVehicle
     {
-        public int Id {get; set;}
+        public int Id { get; set; }
     }
 }

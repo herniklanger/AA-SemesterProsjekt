@@ -1,17 +1,19 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 using InterfacesLib;
+using InterfacesLib.Route;
 using ServiceStack.DataAnnotations;
 
 namespace Route.DataBaseLayre.Models
 {
-    public class Customer : IEntity<int>
+    public class Customer : IEntity<int>, ICustomer
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        
+
         [Reference]
         [JsonIgnore]
-        public List<Checkpoint> Locations  { get; set; } 
+        public List<Checkpoint> Locations { get; set; }
     }
 }

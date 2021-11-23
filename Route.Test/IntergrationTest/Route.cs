@@ -18,6 +18,7 @@ using ServiceStack.DataAnnotations;
 using ServiceStack.OrmLite;
 using ServiceStack.OrmLite.Dapper;
 using JsonSerializer = System.Text.Json.JsonSerializer;
+using Route = Route.DataBaseLayre.Models.Route;
 
 namespace Route.Test.IntergrationTest
 {
@@ -51,7 +52,9 @@ namespace Route.Test.IntergrationTest
                 IEnumerable<DataBaseLayre.Models.Route> ExpedetRoutes = await context.GetAllAsync();
                 foreach (DataBaseLayre.Models.Route ExpedetRoute in ExpedetRoutes)
                 {
-                    result.Should().ContainEquivalentOf(ExpedetRoute, x => x.ExcludingNestedObjects());
+                    result.Should().ContainEquivalentOf(ExpedetRoute, x => 
+                        x.ExcludingNestedObjects()
+                            .Excluding(y=>y.VehicleId));
                 }
             }
 
@@ -72,7 +75,7 @@ namespace Route.Test.IntergrationTest
                     services.GetRequiredService<IRepository<DataBaseLayre.Models.Route, int>>();
                 IDbConnection db = scope.ServiceProvider.GetService<IDbConnectionFactory>().OpenDbConnection();
 
-                await db.SaveAllAsync(InputRoute.Checkpoint.ConvertAll<Customer>(x => x.Customers));
+                await db.SaveAllAsync(InputRoute.Checkpoint.ConvertAll<Customer>(x => x.Customer));
                 await db.SaveAllAsync(InputRoute.Checkpoint);
                 await db.SaveAsync(InputRoute.Vehicle);
                 InputRoute.RouteLocationsList = new List<RouteLocations>();
@@ -113,9 +116,10 @@ namespace Route.Test.IntergrationTest
                 scope.ServiceProvider.GetService<RouteRepository>();
                 IDbConnection db = scope.ServiceProvider.GetService<IDbConnectionFactory>().OpenDbConnection();
 
-                await db.SaveAllAsync(InputRoute.Checkpoint.ConvertAll<Customer>(x => x.Customers));
+                await db.SaveAllAsync(InputRoute.Checkpoint.ConvertAll<Customer>(x => x.Customer));
                 await db.SaveAllAsync(InputRoute.Checkpoint);
                 await db.SaveAsync(InputRoute.Vehicle);
+                
                 //Act
                 HttpResponseMessage response = await TestClient.PostAsJsonAsync("/api/Route/", InputRoute);
 
@@ -146,32 +150,64 @@ namespace Route.Test.IntergrationTest
 
         [Theory]
         [MemberData(nameof(CreateTestRoutes))]
-        public async void Update_Route(DataBaseLayre.Models.Route InputRoute)
+        //TODO: Quesetion Du we move RouteLocations update to it own request
+        //TODO: Question What happens if Checkpoint dossent exit
+        //TODO: Question What happens if only the new data is pobuladet
+        public async void Update_Route(DataBaseLayre.Models.Route resoultRoute)
         {
             //Arrange
-
+            using (var scope = app.Services.CreateScope())
+            {
+                resoultRoute.Checkpoint.ForEach(x => x.CustomerId = x.Customer.Id);
+                Checkpoint checkpoint = new Checkpoint(){Customer = resoultRoute.Checkpoint[0].Customer, Location = new Location(){X = 23.123M, Y = 20.213M},CustomerId = resoultRoute.Checkpoint[0].Customer.Id};
+                IServiceProvider services = scope.ServiceProvider;
+                IDbConnection db = services.GetService<IDbConnectionFactory>().OpenDbConnection();
+                IRepository<DataBaseLayre.Models.Route, int> context =
+                    services.GetRequiredService<IRepository<DataBaseLayre.Models.Route, int>>();
+                await db.SaveAllAsync(resoultRoute.Checkpoint.ConvertAll<Customer>(x => x.Customer));
+                await db.SaveAllAsync(resoultRoute.Checkpoint);
+                await db.SaveAsync(checkpoint);
+                await db.SaveAsync(resoultRoute.Vehicle);
+                await db.SaveAsync(resoultRoute);
+                resoultRoute.Checkpoint.Add(checkpoint);
             //Act
-            HttpResponseMessage response = await TestClient.PostAsJsonAsync("/api/Route/", InputRoute);
+            HttpResponseMessage response = await TestClient.PostAsJsonAsync("/api/Route/", resoultRoute);
 
             //Assert
             string resoultText = await response.Content.ReadAsStringAsync();
+            response.IsSuccessStatusCode.Should().BeTrue(resoultText);
             resoultText.Should().NotBeNullOrEmpty();
+
 
             DataBaseLayre.Models.Route resoultObject =
                 JsonConvert.DeserializeObject<DataBaseLayre.Models.Route>(resoultText);
-            using (var scope = app.Services.CreateScope())
-            {
-                IDbConnection db = scope.ServiceProvider.GetService<IDbConnectionFactory>().OpenDbConnection();
+           
                 DataBaseLayre.Models.Route routeDbStoreage =
                     await db.LoadSingleByIdAsync<DataBaseLayre.Models.Route>(resoultObject.Id);
                 routeDbStoreage.Checkpoint = new List<Checkpoint>();
                 foreach (RouteLocations routeLocations in routeDbStoreage.RouteLocationsList)
                 {
-                    routeDbStoreage.Checkpoint.Add(
-                        await db.LoadSingleByIdAsync<Checkpoint>(routeLocations.CheckpointId));
+                    Checkpoint chek = await db.LoadSingleByIdAsync<Checkpoint>(routeLocations.CheckpointId);
+                    // Checkpoint chek = (await db.QuerySingleAsync<Checkpoint>(
+                    // "SELECT * From \"Checkpoint\" "+ 
+                    //     $" Where \"Checkpoint\".Id = {routeLocations.CheckpointId};"));
+                    // routeDbStoreage.Checkpoint.Add(chek);
+                    // chek.Customers=db.Select<Customer>(x => x.Id == chek.CustomerId).FirstOrDefault();
+                    chek.Customer = db.Select<Customer>(x=>x.Id == chek.CustomerId).FirstOrDefault();
+                    routeDbStoreage.Checkpoint.Add(chek);
                 }
 
-                routeDbStoreage.Should().BeSameAs(InputRoute);
+                routeDbStoreage.Should().BeEquivalentTo(resoultRoute, x =>
+                {
+                    x.Excluding(y => y.RouteLocationsList);
+                    x.Excluding(y => y.VehicleId);
+                    x.Excluding(y => y.Checkpoint);
+                    return x;
+                });
+                routeDbStoreage.Checkpoint.Should()
+                    .BeEquivalentTo(resoultRoute.Checkpoint, x => 
+                        x.Excluding(y => y.RouteLocations)
+                            .Excluding(y => y.Customer.Locations));
             }
         }
 
@@ -186,7 +222,7 @@ namespace Route.Test.IntergrationTest
                 IDbConnection db = services.GetService<IDbConnectionFactory>().OpenDbConnection();
                 IRepository<DataBaseLayre.Models.Route, int> context =
                     services.GetRequiredService<IRepository<DataBaseLayre.Models.Route, int>>();
-                await db.SaveAllAsync(InputRoute.Checkpoint.ConvertAll<Customer>(x => x.Customers));
+                await db.SaveAllAsync(InputRoute.Checkpoint.ConvertAll<Customer>(x => x.Customer));
                 await db.SaveAllAsync(InputRoute.Checkpoint);
                 await db.SaveAsync(InputRoute.Vehicle);
                 await db.SaveAsync(InputRoute);
@@ -237,7 +273,7 @@ namespace Route.Test.IntergrationTest
                                 Y = 2.1234M
                             },
                             RouteLocations = new List<RouteLocations>(),
-                            Customers = new Customer()
+                            Customer = new Customer()
                             {
                                 Id = 1,
                                 Name = "Test",

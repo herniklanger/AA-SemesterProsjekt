@@ -13,8 +13,8 @@ namespace Fleet.DataBaseLayre.Models
 		public string Vinnummer { get; set; }//ID
 		public string Licenseplate { get; set; }
 		public string ModelType { get; set; }
-		public DateTime RegisteringsDate { get; set; }
-		public decimal DrivedKm { get; set; }
+		public DateTime RegisterDate { get; set; }
+		public decimal TotalKm { get; set; }
 		[Reference]
 		public VehicleType VehicleType { get; set; }
 		[JsonIgnore]

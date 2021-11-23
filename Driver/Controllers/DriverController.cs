@@ -32,6 +32,13 @@ namespace Driver.Controllers
 			return value;
 		}
 
+		[HttpGet("GetByName")]
+		public async Task<IEnumerable<DriverModel>> GetByName([FromQuery] string name, CancellationToken cancellationToken = new())
+		{
+			IEnumerable<DriverModel> value = await _driverRepository.GetByName(name);
+			return value;
+		}
+
 		// GET: api/Driver
 		[HttpGet]
 		public async Task<IEnumerable<DriverModel>> Get(CancellationToken cancellationToken = new())
@@ -56,6 +63,8 @@ namespace Driver.Controllers
 		[HttpPost]
 		public async Task<ActionResult<DriverModel>> Post([FromBody] DriverModel value, CancellationToken cancellationToken = new())
 		{
+			List<Contact> contacts = value.Contacts;
+			value.Contacts = new List<Contact>();
 			var id = await _repository.UpsertAsync(value, cancellationToken);
 			var driver = await _repository.GetAsync(id, cancellationToken);
 

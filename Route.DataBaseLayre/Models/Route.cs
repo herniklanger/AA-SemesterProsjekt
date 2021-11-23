@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
 using InterfacesLib;
+using InterfacesLib.Route;
 using Newtonsoft.Json;
 using ServiceStack.DataAnnotations;
 
 namespace Route.DataBaseLayre.Models
 {
-    public class Route : IEntity<int>
-
+    public class Route : IEntity<int>, IRoute<Checkpoint, Vehicle, Customer,Route>
     {
         [AutoIncrement]
         public int Id { get; set; }
@@ -23,7 +23,7 @@ namespace Route.DataBaseLayre.Models
                 var startCheckpoint = StartCheckpoint;
                 startCheckpoint.X = value;
                 StartCheckpoint = startCheckpoint;
-            } 
+            }
         }
         [JsonIgnore]
         public decimal StartCheckpointY
@@ -38,7 +38,7 @@ namespace Route.DataBaseLayre.Models
         }
         [Ignore]
         public Location EndCheckpoint { get; set; }
-        
+
         [JsonIgnore]
         public decimal EndCheckpointX
         {
@@ -63,16 +63,16 @@ namespace Route.DataBaseLayre.Models
         }
         [Reference]
         public Vehicle Vehicle { get; set; }
-        
+
         [Ignore]
         public List<Checkpoint> Checkpoint { get; set; }
         [JsonIgnore]
         public int VehicleId { get; set; }
-        
+
         [Reference]
         [JsonIgnore]
         public List<RouteLocations> RouteLocationsList { get; set; }
-        
+
         public string HistoryLocation { get; set; }
 
     }
