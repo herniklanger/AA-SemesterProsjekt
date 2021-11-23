@@ -1,0 +1,50 @@
+name: Image Build Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  REGISTRY: ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}
+  IMAGE_NAME: fleet
+
+
+jobs:
+
+  build-publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+    
+      - id: registry
+        uses: ASzc/change-string-case-action@v1
+        with:
+          string: ${{ env.REGISTRY }}
+
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '5.0.x'
+          include-prerelease: true
+            
+      - name: Log into registry ${{ env.REGISTRY }}
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v1.10.0
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Build Image
+        run: |
+          docker build -t ${{ steps.registry.outputs.lowercase }}/${{ env.IMAGE_NAME }}:latest -f Dockerfile .
+      - name: Push Image
+        if: github.event_name != 'pull_request'
+        run: |
+          docker push ${{ steps.registry.outputs.lowercase }}/${{ env.IMAGE_NAME }}:latest
