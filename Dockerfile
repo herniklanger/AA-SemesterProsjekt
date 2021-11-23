@@ -11,11 +11,13 @@ RUN dotnet restore "FleetTest/FleetTest.csproj"
 COPY . .
 RUN dotnet build "Fleet/Fleet.csproj" -c Release -o /app/build
 RUN dotnet build "Route/Route.csproj" -c Release -o /app/build
+RUN dotnet build "DriverTest/DriverTest.csproj" -c Release -o /app/build
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS test
 COPY --from=build . .
 RUN dotnet test "FleetTest/FleetTest.csproj"
 RUN dotnet test "Route.Test/Route.Test.csproj"
+RUN dotnet test "DriverTest/DriverTest.csproj"
 
 FROM build AS publish
 RUN dotnet publish "Fleet/Fleet.csproj" -c Release -o /app/publish
