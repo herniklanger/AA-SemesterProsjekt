@@ -31,7 +31,6 @@ namespace Route.Test.IntergrationTest
             //Arrange
             using (var scope = app.Services.CreateScope())
             {
-
                 IServiceProvider services = scope.ServiceProvider;
                 IRepository<DataBaseLayre.Models.Route, int> context =
                     services.GetRequiredService<IRepository<DataBaseLayre.Models.Route, int>>();
@@ -57,8 +56,6 @@ namespace Route.Test.IntergrationTest
                             .Excluding(y=>y.VehicleId));
                 }
             }
-
-
         }
 
         [Theory]

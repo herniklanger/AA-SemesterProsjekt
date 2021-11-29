@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Route.BusinesseLayre.Interfaces;
 
 namespace Route.BusinesseLayre
 {
-    public class RouteCalculatore
+    public class RouteCalculatore : IRouteCalculatore
     {
-        public async Task<DataBaseLayre.Models.Route> GenneradeRoute(DataBaseLayre.Models.Route route)
+        public async Task GenneradeRoute(DataBaseLayre.Models.Route route)
         {
-            return route;
+            
         }
     }
 }

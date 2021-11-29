@@ -7,6 +7,8 @@ using Microsoft.OpenApi.Models;
 using System.Data;
 using System.Data.SqlClient;
 using InterfacesLib;
+using Route.BusinesseLayre;
+using Route.BusinesseLayre.Interfaces;
 using Route.DataBaseLayre;
 using ServiceStack.Data;
 using ServiceStack.OrmLite;
@@ -19,6 +21,7 @@ namespace Route
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            
         }
 
         private IConfiguration Configuration { get; }
@@ -45,7 +48,7 @@ namespace Route
 
                 return connectionFactory;
             });
-            
+            services.AddScoped<IRouteCalculatore, RouteCalculatore>();
             services.AddControllers().AddNewtonsoftJson();
             services.AddSwaggerGen(c =>
             {
