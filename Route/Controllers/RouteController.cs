@@ -44,10 +44,18 @@ namespace Route.Controllers
             return route;
         }
         [HttpPut]
-        public async Task<DataBaseLayre.Models.Route> Put([FromBody] DataBaseLayre.Models.Route route)
+        public async Task<IActionResult> Put([FromBody] DataBaseLayre.Models.Route route)
         {
-            await _repository.UpsertAsync(route);
-            return route;
+                var task = _repository.UpdateAsync(route);
+                await task;
+                if (task.Exception != null)
+                {
+                    return BadRequest(task.Exception);
+                }
+                {
+                    return StatusCode(304);
+                }
+                return Ok(route);
         }
         [HttpDelete]
         public async Task<DataBaseLayre.Models.Route> Delete(int Id)
