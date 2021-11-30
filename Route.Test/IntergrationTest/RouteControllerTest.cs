@@ -18,7 +18,6 @@ using ServiceStack.DataAnnotations;
 using ServiceStack.OrmLite;
 using ServiceStack.OrmLite.Dapper;
 using JsonSerializer = System.Text.Json.JsonSerializer;
-using Route = Route.DataBaseLayre.Models.Route;
 
 namespace Route.Test.IntergrationTest
 {
@@ -128,11 +127,11 @@ namespace Route.Test.IntergrationTest
 
                 DataBaseLayre.Models.Route resoultObject =
                     JsonConvert.DeserializeObject<DataBaseLayre.Models.Route>(resoultText);
-            
+                
                 DataBaseLayre.Models.Route routeDbStoreage =
                     await db.LoadSingleByIdAsync<DataBaseLayre.Models.Route>(resoultObject.Id);
                 
-
+                
                 routeDbStoreage.Should().BeEquivalentTo(InputRoute, x =>
                 {
                     x.Excluding(y => y.Id);
@@ -185,11 +184,6 @@ namespace Route.Test.IntergrationTest
                 foreach (RouteLocations routeLocations in routeDbStoreage.RouteLocationsList)
                 {
                     Checkpoint chek = await db.LoadSingleByIdAsync<Checkpoint>(routeLocations.CheckpointId);
-                    // Checkpoint chek = (await db.QuerySingleAsync<Checkpoint>(
-                    // "SELECT * From \"Checkpoint\" "+ 
-                    //     $" Where \"Checkpoint\".Id = {routeLocations.CheckpointId};"));
-                    // routeDbStoreage.Checkpoint.Add(chek);
-                    // chek.Customers=db.Select<Customer>(x => x.Id == chek.CustomerId).FirstOrDefault();
                     chek.Customer = db.Select<Customer>(x=>x.Id == chek.CustomerId).FirstOrDefault();
                     routeDbStoreage.Checkpoint.Add(chek);
                 }

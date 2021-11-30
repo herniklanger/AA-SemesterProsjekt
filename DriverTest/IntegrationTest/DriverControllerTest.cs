@@ -124,12 +124,12 @@ namespace DriverTest.IntegrationTest
 				var services = scope.ServiceProvider;
 				services.GetService(typeof(IDriverRepository));
 
-				IDbConnection db = (services.GetService(typeof(IDbConnectionFactory)) as IDbConnectionFactory).OpenDbConnection();
+				IDbConnection db = (services.GetService(typeof(IDbConnectionFactory)) as IDbConnectionFactory).OpenDbConnection();//DB service
 				await db.SaveAsync(driver, true);//Add 1 driver
 				int deleateId = driver.Id;
 				driver.Id = 0;
 				await db.SaveAsync(driver, true);//Add 2 drivers
-				int Before = db.Query<int>("SELECT COUNT(*) FROM DriverModel").FirstOrDefault();
+				int Before = db.Query<int>("SELECT COUNT(*) FROM DriverModel").FirstOrDefault();//Dricers entires before delete
 
 				//Act
 				HttpResponseMessage response = await TestClient.DeleteAsync($"api/Driver/{deleateId}");
@@ -137,7 +137,7 @@ namespace DriverTest.IntegrationTest
 				//Assert
 				Assert.True(response.IsSuccessStatusCode, await response.Content.ReadAsStringAsync());
 
-				int Afer = db.Query<int>("SELECT COUNT(*) FROM DriverModel").FirstOrDefault();
+				int Afer = db.Query<int>("SELECT COUNT(*) FROM DriverModel").FirstOrDefault();//Dricers entires after delete
 				Assert.Equal(Before - 1, Afer);
 			}
 		}
