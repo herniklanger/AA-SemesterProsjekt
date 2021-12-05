@@ -167,7 +167,7 @@ namespace Route.Test.IntergrationTest
                 await db.SaveAsync(resoultRoute);
                 resoultRoute.Checkpoint.Add(checkpoint);
             //Act
-            HttpResponseMessage response = await TestClient.PostAsJsonAsync("/api/Route/", resoultRoute);
+            HttpResponseMessage response = await TestClient.PutAsJsonAsync("/api/Route/", resoultRoute);
 
             //Assert
             string resoultText = await response.Content.ReadAsStringAsync();
