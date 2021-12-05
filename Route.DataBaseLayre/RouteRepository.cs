@@ -43,6 +43,23 @@ namespace Route.DataBaseLayre
 
             return entity.Id;
         }
+        public override async Task<int> UpdateAsync(Models.Route entity, CancellationToken cancellationToken = default)
+        {
+            entity.RouteLocationsList = new List<RouteLocations>();
+            foreach (var checkpoint in entity.Checkpoint)
+            {
+                if (checkpoint.Id != 0)
+                {
+                    RouteLocations routeLocations = new RouteLocations()
+                    {Route = entity, Checkpoint = checkpoint};
+                    entity.RouteLocationsList.Add(routeLocations);
+                    checkpoint.RouteLocations = entity.RouteLocationsList;
+                }
+            }
+            Connection.Save(entity,true);
+
+            return entity.Id;
+        }
 
         public override async Task<Models.Route> GetAsync(int id, CancellationToken token = default)
         {
