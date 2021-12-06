@@ -162,9 +162,9 @@ namespace Route.Test.IntergrationTest
                     services.GetRequiredService<IRepository<DataBaseLayre.Models.Route, int>>();
                 await db.SaveAllAsync(resoultRoute.Checkpoint.ConvertAll<Customer>(x => x.Customer));
                 await db.SaveAllAsync(resoultRoute.Checkpoint);
-                await db.SaveAsync(checkpoint, true);
-                await db.SaveAsync(resoultRoute.Vehicle, true);
-                await db.SaveAsync(resoultRoute, true);
+                await db.SaveAsync(checkpoint);
+                await db.SaveAsync(resoultRoute.Vehicle);
+                await db.SaveAsync(resoultRoute);
                 resoultRoute.Checkpoint.Add(checkpoint);
             //Act
             HttpResponseMessage response = await TestClient.PutAsJsonAsync("/api/Route/", resoultRoute);
