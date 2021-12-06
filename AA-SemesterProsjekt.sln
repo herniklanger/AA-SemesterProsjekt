@@ -63,6 +63,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Driver", "Driver\Driver.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DriverTest", "DriverTest\DriverTest.csproj", "{089F5FCD-E13E-4F39-BB84-4DD2ADADB700}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fleet.SpecFlowProject", "Fleet.SpecFlowProject\Fleet.SpecFlowProject.csproj", "{33683228-1962-4821-904E-6ECB68E8DFB5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -129,6 +131,10 @@ Global
 		{089F5FCD-E13E-4F39-BB84-4DD2ADADB700}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{089F5FCD-E13E-4F39-BB84-4DD2ADADB700}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{089F5FCD-E13E-4F39-BB84-4DD2ADADB700}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33683228-1962-4821-904E-6ECB68E8DFB5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33683228-1962-4821-904E-6ECB68E8DFB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33683228-1962-4821-904E-6ECB68E8DFB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33683228-1962-4821-904E-6ECB68E8DFB5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -152,6 +158,7 @@ Global
 		{5FC08D4B-376B-469B-ACD7-F4F67229C866} = {B960B7ED-A9A7-4CD7-8AC2-5D42E3AA21CE}
 		{089F5FCD-E13E-4F39-BB84-4DD2ADADB700} = {B960B7ED-A9A7-4CD7-8AC2-5D42E3AA21CE}
 		{F4CBF117-B92D-4B55-859B-A5AC3EC3CBE7} = {1C7477C3-C818-425E-8F33-234637DA3970}
+		{33683228-1962-4821-904E-6ECB68E8DFB5} = {1129F62D-DEE6-4AB1-97B1-2BF033DE89C8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {87E98DFA-C391-402B-AE50-A6F16EAA9AF7}
